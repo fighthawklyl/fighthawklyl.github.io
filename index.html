@@ -568,7 +568,7 @@
 
 
 
-<div class="swiper-length" style="display: none;">1</div>
+<div class="swiper-length" style="display: none;">0</div>
 <div id="appSwiper"
   class="swiper-no-swiping"
   @mouseenter="stopAutoPlay()" 
@@ -576,79 +576,39 @@
 >
   <swiper v-cloak ref="mySwiper" :options="swiperOptions" @slideChangeTransitionEnd="slideChangeTransitionEnd">
     
-      
-        <swiper-slide>
-          <div class="item swiper-lazy" data-background="/medias/1.jpg" style="background-size: 90000px; 
-            background-position: left center;" style="position: relative;">
-            <div class="swiper-bgmask" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></div>
-              <div class="flag">
-                
-                <div class="img-mask swiper-lazy swiper-default-bgImg" data-background="/medias/1.jpg" style="height: 100%; background-size: cover; 
-                  background-position: center center;">
-                  <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>   
-                </div>
-                <div class="flag-text">
-                  <div class="flag-text-content">
-                    <div class="title ani animated" swiper-animate-effect="fadeInDown" swiper-animate-duration="0.2s" swiper-animate-delay="0.1s">Marysufer Blog</div>
-                    
-                      <div class="ani animated default-excerpt" swiper-animate-effect="fadeInDown" swiper-animate-duration="0.2s" swiper-animate-delay="0.1s">
-                        <vue-typed-js :strings="defaultDesc" :loop="defaultDescTypedLoop" typeSpeed="10000">
-                          <h1 class="typing"></h1>
-                        </vue-typed-js>
-                      </div>
-                      
-                  </div>
-                  <div style="display: flex;" class="flag-text-btns">
-                    
-                      <div class="ani animated" swiper-animate-effect="fadeInDown" swiper-animate-duration="0.2s" swiper-animate-delay="0.1s"><a target="_blank" rel="noopener" href="https://yuang01.gitee.io/2021/02/08/hexo-theme-bamboo-new/" class="read-more border-color swiper-btn-color" style="display: inline-block; z-index:1;">阅读文档</a></div>
-                    
-                    
-                      <div class="ani animated" style="margin-left: 10px;" swiper-animate-effect="fadeInDown" swiper-animate-duration="0.2s" swiper-animate-delay="0.1s"><a target="_blank" rel="noopener" href="https://gitee.com/yuang01/hexo-theme-bamboo/repository/archive/dev.zip" class="read-more border-color swiper-btn-color2" style="display: inline-block; z-index:1;border: 1px solid white;">下载主题</a></div>
-                    
-                  </div>
-                </div>
+      <swiper-slide>
+        <div class="item swiper-lazy" data-background="/medias/1.jpg" style="background-size: 90000px; 
+          background-position: left center;" style="position: relative;">
+          <div class="swiper-bgmask" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></div>
+            <div class="flag">
+              
+              <div class="img-mask swiper-lazy swiper-default-bgImg" data-background="/medias/1.jpg" style="height: 100%; background-size: cover; 
+                background-position: center center;">
+                <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>   
               </div>
-            </div>
-        </swiper-slide>
-      
-      
-        
-        
-          
-          <swiper-slide>
-            <div class="item swiper-lazy" data-background="/medias/1.jpg" style=" background-size: 90000px; 
-            background-position: left center;" style="position: relative;">
-            <div class="swiper-bgmask" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></div>
-              <div class="flag" style="z-index: 2;">
-                <div class="img-mask swiper-lazy" data-background="/medias/1.jpg" style="height: 100%; background-size: cover; 
-                  background-position: center center;">
-                  <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>  
-                </div>
-                <div class="flag-text">
-                  <div class="flag-text-content">
-                    <div class="title ani animated" swiper-animate-effect="fadeInDown" swiper-animate-duration="0.2s" swiper-animate-delay="0.1s">
-                      <a href="/2021/07/08/hello-world/">
-                        Hello World
-                      </a>
+              <div class="flag-text">
+                <div class="flag-text-content">
+                  <div class="title ani animated" swiper-animate-effect="fadeInDown" swiper-animate-duration="0.2s" swiper-animate-delay="0.1s">Marysufer Blog</div>
+                  
+                    <div class="ani animated default-excerpt" swiper-animate-effect="fadeInDown" swiper-animate-duration="0.2s" swiper-animate-delay="0.1s">
+                      <vue-typed-js :strings="defaultDesc" :loop="defaultDescTypedLoop" :typeSpeed="1000">
+                        <h1 class="typing"></h1>
+                      </vue-typed-js>
                     </div>
-                    <div class="excerpt ani animated" swiper-animate-effect="fadeInDown" swiper-animate-duration="0.2s" swiper-animate-delay="0.1s">Quick StartCreate a new post1$ hexo new &quot;My New Post&quot;
-
-More info: Writing
-Run server1$ hexo server
-
-More info:</div>
-                  </div>
-                  <div class="bottom-one-btn ani animated" swiper-animate-effect="fadeInDown" swiper-animate-duration="0.2s" swiper-animate-delay="0.1s"><a href="/2021/07/08/hello-world/" class="read-more border-color swiper-btn-color" style="display: inline-block; z-index:1;">阅读更多</a></div>
+                    
+                </div>
+                <div style="display: flex;" class="flag-text-btns">
+                  
+                    <div class="ani animated" swiper-animate-effect="fadeInDown" swiper-animate-duration="0.2s" swiper-animate-delay="0.1s"><a target="_blank" rel="noopener" href="https://yuang01.gitee.io/2021/02/08/hexo-theme-bamboo-new/" class="read-more border-color swiper-btn-color" style="display: inline-block; z-index:1;">阅读文档</a></div>
+                  
+                  
+                    <div class="ani animated" style="margin-left: 10px;" swiper-animate-effect="fadeInDown" swiper-animate-duration="0.2s" swiper-animate-delay="0.1s"><a target="_blank" rel="noopener" href="https://gitee.com/yuang01/hexo-theme-bamboo/repository/archive/dev.zip" class="read-more border-color swiper-btn-color2" style="display: inline-block; z-index:1;border: 1px solid white;">下载主题</a></div>
+                  
                 </div>
               </div>
             </div>
-
-          </swiper-slide>
-        
-      
-    <div class="swiper-pagination" slot="pagination" style="display: none;"></div>
-    <div class="swiper-button-prev swiper-button-white" slot="button-prev" style="display: none;"></div>
-    <div class="swiper-button-next swiper-button-white" slot="button-next" style="display: none;"></div>
+          </div>
+      </swiper-slide>
     
   </swiper>
   
@@ -1353,12 +1313,12 @@ More info:</div>
 					</div>
 					<div class="text">
 						<div class="text-main">
-							<div class="title"><a href="/2021/07/08/hello-world/">Hello World</a></div>
+							<div class="title"><a href="/2021/07/12/hello-world/">Hello World</a></div>
 							<div class="content">
 								Quick StartCreate a new post1$ hexo new &quot;My New Post&qu
 							</div>
 						</div>
-						<a href="/2021/07/08/hello-world/" class="more">
+						<a href="/2021/07/12/hello-world/" class="more">
 							<i class="fa fa-eye" aria-hidden="true"></i>阅读更多
 						</a>
 					</div>
@@ -1379,10 +1339,10 @@ More info:</div>
         <div class="post-info">
           <div class="post-time">
             <i class="fa fa-clock-o" aria-hidden="true"></i>
-            <span class="post-time">2021-07-08</span>
+            <span class="post-time">2021-07-12</span>
           </div>
           <div class="post-title">
-            <a class="post-title-link" href="/2021/07/08/hello-world/">Hello World</a>
+            <a class="post-title-link" href="/2021/07/12/hello-world/">Hello World</a>
           </div>
           <div class="post-meta">
             <div class="post-tags">
@@ -1405,7 +1365,7 @@ More info:</div>
           </div>
           <div class="post-img-mobile">
             
-              <a href="/2021/07/08/hello-world/" class="lazyload" data-original="/medias/1.jpg" style="background-size: cover; 
+              <a href="/2021/07/12/hello-world/" class="lazyload" data-original="/medias/1.jpg" style="background-size: cover; 
                 background-position: center center;">
               </a>
             
@@ -1420,14 +1380,14 @@ More info:
           </div>
         </div>
         <div class="post-more">
-          <a href="/2021/07/08/hello-world/">
+          <a href="/2021/07/12/hello-world/">
             <i class="iconfont iconmore" style="float: right;  " title="阅读更多"></i>
           </a>
         </div>
       </div>
       <div class="post-img">
         
-          <a href="/2021/07/08/hello-world/" class="lazyload" data-original="/medias/1.jpg" style="background-size: cover; 
+          <a href="/2021/07/12/hello-world/" class="lazyload" data-original="/medias/1.jpg" style="background-size: cover; 
             background-position: center center;">
           </a>
         
