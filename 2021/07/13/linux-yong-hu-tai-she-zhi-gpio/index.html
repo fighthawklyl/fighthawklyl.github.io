@@ -647,26 +647,26 @@
 <h4 id="unexport"><a href="#unexport" class="headerlink" title="unexport"></a>unexport</h4><p>删除导出的GPIO</p>
 <h3 id="二、GPIO使用"><a href="#二、GPIO使用" class="headerlink" title="二、GPIO使用"></a>二、GPIO使用</h3><h4 id="进入-sys-class-gpio-目录"><a href="#进入-sys-class-gpio-目录" class="headerlink" title="进入/sys/class/gpio/目录"></a>进入/sys/class/gpio/目录</h4><p>终端输入:</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> /sys/class/gpio/<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img "" class="lazyload placeholder" data-original="/photo/GPIO/1.PNG" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"></p>
+<p><img "" class="lazyload placeholder" data-original="/photo/gpio/1.PNG" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"></p>
 <h4 id="添加GPIO"><a href="#添加GPIO" class="headerlink" title="添加GPIO"></a>添加GPIO</h4><p>终端输入: </p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">echo</span> <span class="token number">30</span> <span class="token operator">></span> <span class="token builtin class-name">export</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img "" class="lazyload placeholder" data-original="/photo/GPIO/2.PNG" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"></p>
+<p><img "" class="lazyload placeholder" data-original="/photo/gpio/2.PNG" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"></p>
 <p>可以发现目录下出现了一个gpio30，这就代表添加gpio成功了。如果执行后没有添加上，没反应或提示不能添加，表示该gpio已经被作为其他功能使用。</p>
 <h4 id="操作GPIO"><a href="#操作GPIO" class="headerlink" title="操作GPIO"></a>操作GPIO</h4><p>终端输入:</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> gpio30<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img "" class="lazyload placeholder" data-original="/photo/GPIO/3.PNG" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"></p>
+<p><img "" class="lazyload placeholder" data-original="/photo/gpio/3.PNG" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"></p>
 <p>使用ls命令可以查看到进去后目录下的几个文件如上图。</p>
 <h4 id="direction"><a href="#direction" class="headerlink" title="direction"></a>direction</h4><p>设置引脚输出输入方向<br>1、设置输入</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">echo</span> <span class="token keyword">in</span> <span class="token operator">></span> direction<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img "" class="lazyload placeholder" data-original="/photo/GPIO/4.PNG" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"><br>检查是否设置成功</p>
+<p><img "" class="lazyload placeholder" data-original="/photo/gpio/4.PNG" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"><br>检查是否设置成功</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">cat</span> direction<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img "" class="lazyload placeholder" data-original="/photo/GPIO/5.PNG" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"><br>显示为in，则设置输入方向成功</p>
+<p><img "" class="lazyload placeholder" data-original="/photo/gpio/5.PNG" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"><br>显示为in，则设置输入方向成功</p>
 <p>2、设置输出</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">echo</span> out <span class="token operator">></span> direction<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>检查是否成功同上</p>
 <h4 id="value"><a href="#value" class="headerlink" title="value"></a>value</h4><p>1、设置高电平</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">echo</span> <span class="token number">1</span> <span class="token operator">></span> value<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><code>注意</code>:该设置操作必须要上面输出输入设置为输出才能设置<br><img "" class="lazyload placeholder" data-original="/photo/GPIO/6.PNG" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"><br>如图，查询得知原来为低电平，value为0，设置后查询得知为1.设置成功。</p>
+<p><code>注意</code>:该设置操作必须要上面输出输入设置为输出才能设置<br><img "" class="lazyload placeholder" data-original="/photo/gpio/6.PNG" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"><br>如图，查询得知原来为低电平，value为0，设置后查询得知为1.设置成功。</p>
 <p>2、设置低电平</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">echo</span> <span class="token number">0</span> <span class="token operator">></span> value<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
       </div>
