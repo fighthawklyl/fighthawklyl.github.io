@@ -656,7 +656,7 @@
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> gpio30<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><img "" class="lazyload placeholder" data-original="/photo/gpio/3.png" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"></p>
 <p>使用ls命令可以查看到进去后目录下的几个文件如上图。</p>
-<h4 id="direction"><a href="#direction" class="headerlink" title="direction"></a>direction</h4><p>设置引脚输出输入方向<br>1、设置输入</p>
+<h5 id="direction"><a href="#direction" class="headerlink" title="direction"></a>direction</h5><p>设置引脚输出输入方向<br>1、设置输入</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">echo</span> <span class="token keyword">in</span> <span class="token operator">></span> direction<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><img "" class="lazyload placeholder" data-original="/photo/gpio/4.png" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"><br>检查是否设置成功</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">cat</span> direction<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -664,7 +664,7 @@
 <p>2、设置输出</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">echo</span> out <span class="token operator">></span> direction<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>检查是否成功同上</p>
-<h4 id="value"><a href="#value" class="headerlink" title="value"></a>value</h4><p>1、设置高电平</p>
+<h5 id="value"><a href="#value" class="headerlink" title="value"></a>value</h5><p>1、设置高电平</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">echo</span> <span class="token number">1</span> <span class="token operator">></span> value<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><code>注意</code>:该设置操作必须要上面输出输入设置为输出才能设置<br><img "" class="lazyload placeholder" data-original="/photo/gpio/6.png" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"><br>如图，查询得知原来为低电平，value为0，设置后查询得知为1.设置成功。</p>
 <p>2、设置低电平</p>
