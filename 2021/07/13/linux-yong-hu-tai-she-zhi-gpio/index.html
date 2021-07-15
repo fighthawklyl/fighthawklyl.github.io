@@ -626,7 +626,9 @@
         
       </div>
       <div class="post-content">
-        <h2 id="Linux用户态设置GPIO"><a href="#Linux用户态设置GPIO" class="headerlink" title="Linux用户态设置GPIO"></a>Linux用户态设置GPIO</h2><h3 id="一、GPIO操作相关目录以及接口"><a href="#一、GPIO操作相关目录以及接口" class="headerlink" title="一、GPIO操作相关目录以及接口"></a>一、GPIO操作相关目录以及接口</h3><h4 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h4><p>/sys/class/gpio/</p>
+        <h2 id="Linux用户态设置GPIO"><a href="#Linux用户态设置GPIO" class="headerlink" title="Linux用户态设置GPIO"></a>Linux用户态设置GPIO</h2><p>当单独排查或调试某个引脚相关硬件时，如果直接运行app程序，通过代码修改一次运行一次会比较麻烦。<br>这个时候应当单独对该引脚调试，也可避免程序中可能存在未知的地方修改引脚。</p>
+<span id="more"></span>
+<h3 id="一、GPIO操作相关目录以及接口"><a href="#一、GPIO操作相关目录以及接口" class="headerlink" title="一、GPIO操作相关目录以及接口"></a>一、GPIO操作相关目录以及接口</h3><h4 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h4><p>/sys/class/gpio/</p>
 <h4 id="export"><a href="#export" class="headerlink" title="export"></a>export</h4><p>用于导出指定编号的引脚，用为GPIO直接使用</p>
 <h4 id="unexport"><a href="#unexport" class="headerlink" title="unexport"></a>unexport</h4><p>删除导出的GPIO</p>
 <h3 id="二、GPIO使用"><a href="#二、GPIO使用" class="headerlink" title="二、GPIO使用"></a>二、GPIO使用</h3><h4 id="进入-sys-class-gpio-目录"><a href="#进入-sys-class-gpio-目录" class="headerlink" title="进入/sys/class/gpio/目录"></a>进入/sys/class/gpio/目录</h4><p>终端输入:</p>
