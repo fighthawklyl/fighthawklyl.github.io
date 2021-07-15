@@ -194,6 +194,8 @@
               
                 <a href="/friends" class="drawer-menu-item-link">
                   
+                    <i class="fa fa-plug" aria-hidden="true"></i>
+                  
                   <span class="name">友情链接</span>
                 </a>
               
@@ -204,9 +206,7 @@
                 <a href="javascript:;" class="drawer-menu-item-link has-children" @click="openOrCloseMenu(6)">
                   <span>
                     
-                      <i class="fa fa-link"></i>
-                    
-                    <span class="name">更多</span>
+                    <span class="name">👇更多</span>
                   </span>
                   <i class="fa fa-chevron-left arrow " :class="{'icon-rotate': isOpen(6)}" aria-hidden="true"></i>
                 </a>
@@ -215,36 +215,28 @@
                   <li>
                     <a href="/gallery">
                       
-                      <i class="fa fa-music" style="margin-top: -20px;"></i>
-                      
-                      <span>图库</span>
+                      <span>💻图库</span>
                     </a>
                   </li>
                   
                   <li>
                     <a href="/huoban">
                       
-                      <i class="fa fa-film" style="margin-top: -20px;"></i>
-                      
-                      <span>友情连接</span>
+                      <span>🤝友情连接</span>
                     </a>
                   </li>
                   
                   <li>
                     <a href="/me">
                       
-                      <i class="fa fa-film" style="margin-top: -20px;"></i>
-                      
-                      <span>关于我</span>
+                      <span>🤡关于我</span>
                     </a>
                   </li>
                   
                   <li>
                     <a target="_blank" rel="noopener" href="http://baidu.com">
                       
-                      <i class="fa fa-film" style="margin-top: -20px;"></i>
-                      
-                      <span>百度</span>
+                      <span>🔍百度</span>
                     </a>
                   </li>
                   
@@ -381,6 +373,8 @@
               
                 <a href="/friends" class="menu-item-link">
                   
+                    <i class="fa fa-plug" aria-hidden="true"></i>
+                  
                   <span class="name">友情链接</span>
                 </a>
               
@@ -390,9 +384,7 @@
               
                 <a href="javascript:;" class="menu-item-link">
                   
-                    <i class="fa fa-link"></i>
-                  
-                  <span class="name">更多</span>
+                  <span class="name">👇更多</span>
                   <i class="fa fa-chevron-down arrow" aria-hidden="true"></i>
                 </a>
                 <ul class="sub-menu">
@@ -400,36 +392,28 @@
                   <li>
                     <a href="/gallery">
                       
-                      <i class="fa fa-music" style="margin-top: -20px;"></i>
-                      
-                      <span>图库</span>
+                      <span>💻图库</span>
                     </a>
                   </li>
                   
                   <li>
                     <a href="/huoban">
                       
-                      <i class="fa fa-film" style="margin-top: -20px;"></i>
-                      
-                      <span>友情连接</span>
+                      <span>🤝友情连接</span>
                     </a>
                   </li>
                   
                   <li>
                     <a href="/me">
                       
-                      <i class="fa fa-film" style="margin-top: -20px;"></i>
-                      
-                      <span>关于我</span>
+                      <span>🤡关于我</span>
                     </a>
                   </li>
                   
                   <li>
                     <a target="_blank" rel="noopener" href="http://baidu.com">
                       
-                      <i class="fa fa-film" style="margin-top: -20px;"></i>
-                      
-                      <span>百度</span>
+                      <span>🔍百度</span>
                     </a>
                   </li>
                   
@@ -666,7 +650,8 @@
 <p>检查是否成功同上</p>
 <h5 id="value"><a href="#value" class="headerlink" title="value"></a>value</h5><p>1、设置高电平</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">echo</span> <span class="token number">1</span> <span class="token operator">></span> value<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><code>注意</code>:该设置操作必须要上面输出输入设置为输出才能设置<br><img "" class="lazyload placeholder" data-original="/photo/gpio/6.png" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"><br>如图，查询得知原来为低电平，value为0，设置后查询得知为1.设置成功。</p>
+<p><font color='red'> 注意 </font> :该设置操作必须要上面输出输入设置为输出才能设置</p>
+<p><img "" class="lazyload placeholder" data-original="/photo/gpio/6.png" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"><br>如图，查询得知原来为低电平，value为0，设置后查询得知为1.设置成功。</p>
 <p>2、设置低电平</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">echo</span> <span class="token number">0</span> <span class="token operator">></span> value<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
       </div>
