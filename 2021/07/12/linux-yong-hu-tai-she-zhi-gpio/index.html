@@ -592,7 +592,7 @@
       
       <div class="post-meta">
         <i class="fa fa-clock-o" aria-hidden="true"></i>
-        <span class="post-time">2021-07-13</span>
+        <span class="post-time">2021-07-12</span>
       </div>
       
       <div class="post-tags-categories">
@@ -600,16 +600,16 @@
         <div class="tags">
           <i class="iconfont icontag"></i>
           
-            <a href="/tags/Linux/" class="">
-              Linux
-            </a>
-          
             <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" class="">
               嵌入式
             </a>
           
             <a href="/tags/Gpio/" class="">
               Gpio
+            </a>
+          
+            <a href="/tags/Linux/" class="">
+              Linux
             </a>
           
         </div>
@@ -656,6 +656,11 @@
 <p><img "" class="lazyload placeholder" data-original="/photo/gpio/6.png" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"><br>如图，查询得知原来为低电平，value为0，设置后查询得知为1.设置成功。</p>
 <p>2、设置低电平</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">echo</span> <span class="token number">0</span> <span class="token operator">></span> value<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<div class="note info"><p>当上述操作后如果，设置高电平应当是3.3V，测量电压却远低于3.3V，这个时候就需要直接操作寄存器来查看管脚复用情况，确认是否正确解复用为gpio模式</p></div>
+
+<p>👇👇👇👇👇<br><a href="">管脚复用</a><br><a href="">读写寄存器</a></p>
+
       </div>
       
         <div class="copyright">
@@ -665,7 +670,7 @@
     </li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
-    <a href="/2021/07/13/linux-yong-hu-tai-she-zhi-gpio/" target="_blank" title="Linux用户态设置gpio">https://fighthawklyl.github.io/2021/07/13/linux-yong-hu-tai-she-zhi-gpio/</a>
+    <a href="/2021/07/12/linux-yong-hu-tai-she-zhi-gpio/" target="_blank" title="Linux用户态设置gpio">https://fighthawklyl.github.io/2021/07/12/linux-yong-hu-tai-she-zhi-gpio/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明:   </strong>
@@ -682,6 +687,23 @@
 <div class="post-nav">
 
 
+
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img lazyload" data-original="/medias/9.jpg" style="background-size: cover; 
+      background-position: center center;">
+    </div>
+    <a href="/2021/07/15/guan-jiao-jie-fu-yong/" class="post-nav-link">
+      <div class="title">
+        <i class="fa fa-angle-left"></i> 上一篇:
+        <div>管脚复用</div>
+      </div>
+      
+      <!-- <div class="content">
+        管脚复用管脚复用指一个引脚具有多种功能，可以在不同时刻使用不同的功能(时分复用)，需要通过配置寄存器来开关芯片外部引脚和
+      </div> -->
+    </a>
+  </div>
 
 
 
@@ -1317,8 +1339,8 @@
 
         function doSomething() {
           that.$notify({
-            title: "成功",
-            content: "代码已复制，请遵守相关授权协议。",
+            title: "哇哦!",
+            content: "你悄悄的挖走了一些奇怪的东西！",
             type: 'success'
           })
           // console.log('ctrl + c 监听成功');  
