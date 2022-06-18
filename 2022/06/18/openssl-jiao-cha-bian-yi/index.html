@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>marysufer&#39;s blog</title>
+  <title>openssl交叉编译 | marysufer&#39;s blog</title>
 
   
     
@@ -568,14 +568,14 @@
 
 
 
-<div class="post-detail-header lazyload" id="thumbnail_canvas" data-original="/medias/1.jpg" style="background-repeat: no-repeat; background-size: cover; 
+<div class="post-detail-header lazyload" id="thumbnail_canvas" data-original="/medias/10.jpg" style="background-repeat: no-repeat; background-size: cover; 
   background-position: center center;position: relative;">
   <div class="post-detail-header-mask"></div>
   <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
   <div class="title-box">
     <span class="title">
-      
+      openssl交叉编译
     </span>
   </div>
   
@@ -597,10 +597,51 @@
       
       <div class="post-tags-categories">
         
+        <div class="tags">
+          <i class="iconfont icontag"></i>
+          
+            <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" class="">
+              嵌入式
+            </a>
+          
+            <a href="/tags/%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/" class="">
+              交叉编译
+            </a>
+          
+            <a href="/tags/openssl/" class="">
+              openssl
+            </a>
+          
+        </div>
+        
+        
+        <div class="categories">
+          <i class="iconfont iconbookmark1"></i>
+          
+            <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/" class="">
+              嵌入式
+            </a>
+          
+        </div>
         
       </div>
       <div class="post-content">
-        
+        <h4 id="一、下载openssl源码"><a href="#一、下载openssl源码" class="headerlink" title="一、下载openssl源码"></a>一、下载openssl源码</h4><p><a href="">github3.0.1版本</a><br><a target="_blank" rel="noopener" href="https://www.openssl.org/">openssl官网</a><br><img "" class="lazyload placeholder" data-original="/photo/openssl/1.jpg" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"><br><img "" class="lazyload placeholder" data-original="/photo/openssl/2.jpg" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"></p>
+<h4 id="二、交叉编译"><a href="#二、交叉编译" class="headerlink" title="二、交叉编译"></a>二、交叉编译</h4><h5 id="1、解压"><a href="#1、解压" class="headerlink" title="1、解压"></a>1、解压</h5><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">tar</span> -xzvf openssl-3.0.1.tar.gz<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h5 id="2、配置交叉编译"><a href="#2、配置交叉编译" class="headerlink" title="2、配置交叉编译"></a>2、配置交叉编译</h5><p>以联咏NT98331平台为例</p>
+<div class="note info"><p>no-asm 关于汇编的模块不进行编译</p></div>
+<div class="note info"><p>shared 编译成动态链接库</p></div>
+<div class="note info"><p>no-async 不编译异步相关函数</p></div>
+<div class="note info"><p>–prefix 指定编译结果目录即安装目录</p></div>
+<div class="note info"><p>–cross-compile-prefix 指定交叉编译器及其路径，下面是交叉编译器已经再环境变量申明</p></div>
+<div class="note info"><p>CC 配置编译器</p></div>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./Configure no-asm shared no-async --prefix<span class="token operator">=</span>/home/liyongli/SVN/openssl331 --cross-compile-prefix<span class="token operator">=</span>arm-ca53-linux-uclibcgnueabihf-novatek-8.4- <span class="token assign-left variable">CC</span><span class="token operator">=</span>gcc<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>配置完成<br><img "" class="lazyload placeholder" data-original="/photo/openssl/3.jpg" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"></p>
+<p>打开Makefile，删除 -m64<br><img "" class="lazyload placeholder" data-original="/photo/openssl/4.jpg" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"></p>
+<p>先后执行make 和 make install即可完成编译</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">make</span>
+<span class="token function">make</span> <span class="token function">install</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
       </div>
       
         <div class="copyright">
@@ -610,7 +651,7 @@
     </li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
-    <a href="/2022/06/18/openssl-jiao-cha-bian-yi/" target="_blank" title="">https://fighthawklyl.github.io/2022/06/18/openssl-jiao-cha-bian-yi/</a>
+    <a href="/2022/06/18/openssl-jiao-cha-bian-yi/" target="_blank" title="openssl交叉编译">https://fighthawklyl.github.io/2022/06/18/openssl-jiao-cha-bian-yi/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明:   </strong>
@@ -628,20 +669,38 @@
 
 
 
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img lazyload" data-original="/medias/8.jpg" style="background-size: cover; 
+      background-position: center center;">
+    </div>
+    <a href="/2022/06/19/curl-jiao-cha-bian-yi/" class="post-nav-link">
+      <div class="title">
+        <i class="fa fa-angle-left"></i> 上一篇:
+        <div>curl交叉编译</div>
+      </div>
+      
+      <!-- <div class="content">
+        
+      </div> -->
+    </a>
+  </div>
+
 
 
   
   <div class="post-nav-next post-nav-item">
-    <div class="post-nav-img lazyload" data-original="/medias/1.jpg" style="background-size: cover; 
+    <div class="post-nav-img lazyload" data-original="/medias/5.jpg" style="background-size: cover; 
       background-position: center center;">
     </div>
-    <a href="/2022/06/18/curl-jiao-cha-bian-yi/" class="post-nav-link">
+    <a href="/2022/04/13/iptables-wang-luo-gong-xiang/" class="post-nav-link">
       <div class="title">
         下一篇: <i class="fa fa-angle-right"></i>
-        <div></div>
+        <div>iptables网络共享</div>
       </div>
       <!-- <div class="content">
-        
+        实现在嵌入式平台内网共享A设备有外网B设备无外网使用iptables nat转发，实现A设备给B设备提供网络
+一、内核添
       </div> -->
     </a>
   </div>
