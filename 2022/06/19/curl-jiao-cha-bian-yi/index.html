@@ -626,7 +626,17 @@
         
       </div>
       <div class="post-content">
-        
+        <h4 id="一、下载curl源码"><a href="#一、下载curl源码" class="headerlink" title="一、下载curl源码"></a>一、下载curl源码</h4><p><a target="_blank" rel="noopener" href="https://curl.se/download/">curl官网</a></p>
+<h4 id="二、交叉编译"><a href="#二、交叉编译" class="headerlink" title="二、交叉编译"></a>二、交叉编译</h4><h5 id="1、解压"><a href="#1、解压" class="headerlink" title="1、解压"></a>1、解压</h5><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">tar</span> -xzvf curl-7.82.0.tar.gz<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="2、配置交叉编译"><a href="#2、配置交叉编译" class="headerlink" title="2、配置交叉编译"></a>2、配置交叉编译</h4><p>以联咏NT98331平台为例</p>
+<div class="note info"><p>–prefix 指定编译安装目录</p></div>
+<div class="note info"><p>–disable-threaded-resolver 应该和线程有关，安装时报了 Threaded resolver enabled butno thread library found 这个错，所以禁用了} {% note info</p></div>
+<div class="note info"><p>–with-ssl 指定ssl目录。</p></div>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./configure --target<span class="token operator">=</span>arm-ca53-linux --host<span class="token operator">=</span>arm-ca53-linux  --prefix<span class="token operator">=</span>/home/liyongli/SVN/curl331 --disable-threaded-resolver <span class="token assign-left variable">CC</span><span class="token operator">=</span>arm-ca53-linux-uclibcgnueabihf-novatek-8.4-gcc --with-ssl<span class="token operator">=</span>/home/liyongli/SVN/openssl331 --enable-static<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><a href="">opessl交叉编译</a></p>
+
       </div>
       
         <div class="copyright">
