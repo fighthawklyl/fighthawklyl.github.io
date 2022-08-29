@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>Linux用户态设置gpio | marysufer&#39;s blog</title>
+  <title>linux usb设备数量和类型识别 | marysufer&#39;s blog</title>
 
   
     
@@ -568,14 +568,14 @@
 
 
 
-<div class="post-detail-header lazyload" id="thumbnail_canvas" data-original="/medias/4.jpg" style="background-repeat: no-repeat; background-size: cover; 
+<div class="post-detail-header lazyload" id="thumbnail_canvas" data-original="/medias/15.jpg" style="background-repeat: no-repeat; background-size: cover; 
   background-position: center center;position: relative;">
   <div class="post-detail-header-mask"></div>
   <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
   <div class="title-box">
     <span class="title">
-      Linux用户态设置gpio
+      linux usb设备数量和类型识别
     </span>
   </div>
   
@@ -592,7 +592,7 @@
       
       <div class="post-meta">
         <i class="fa fa-clock-o" aria-hidden="true"></i>
-        <span class="post-time">2021-07-12</span>
+        <span class="post-time">2022-07-16</span>
       </div>
       
       <div class="post-tags-categories">
@@ -600,16 +600,24 @@
         <div class="tags">
           <i class="iconfont icontag"></i>
           
-            <a href="/tags/Linux/" class="">
-              Linux
-            </a>
-          
             <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" class="">
               嵌入式
             </a>
           
-            <a href="/tags/Gpio/" class="">
-              Gpio
+            <a href="/tags/linux/" class="">
+              linux
+            </a>
+          
+            <a href="/tags/usb/" class="">
+              usb
+            </a>
+          
+            <a href="/tags/%E7%9B%AE%E5%BD%95%E8%8E%B7%E5%8F%96/" class="">
+              目录获取
+            </a>
+          
+            <a href="/tags/readdir/" class="">
+              readdir
             </a>
           
         </div>
@@ -626,41 +634,108 @@
         
       </div>
       <div class="post-content">
-        <h2 id="Linux用户态设置GPIO"><a href="#Linux用户态设置GPIO" class="headerlink" title="Linux用户态设置GPIO"></a>Linux用户态设置GPIO</h2><p>当单独排查或调试某个引脚相关硬件时，如果直接运行app程序，通过代码修改一次运行一次会比较麻烦。<br>这个时候应当单独对该引脚调试，也可避免程序中可能存在未知的地方修改引脚。</p>
-<span id="more"></span>
-<h3 id="一、GPIO操作相关目录以及接口"><a href="#一、GPIO操作相关目录以及接口" class="headerlink" title="一、GPIO操作相关目录以及接口"></a>一、GPIO操作相关目录以及接口</h3><h4 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h4><p>/sys/class/gpio/</p>
-<h4 id="export"><a href="#export" class="headerlink" title="export"></a>export</h4><p>用于导出指定编号的引脚，用为GPIO直接使用</p>
-<h4 id="unexport"><a href="#unexport" class="headerlink" title="unexport"></a>unexport</h4><p>删除导出的GPIO</p>
-<h3 id="二、GPIO使用"><a href="#二、GPIO使用" class="headerlink" title="二、GPIO使用"></a>二、GPIO使用</h3><h4 id="进入-sys-class-gpio-目录"><a href="#进入-sys-class-gpio-目录" class="headerlink" title="进入/sys/class/gpio/目录"></a>进入/sys/class/gpio/目录</h4><p>终端输入:</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> /sys/class/gpio/<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img "" class="lazyload placeholder" data-original="/photo/gpio/1.png" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"></p>
-<h4 id="添加GPIO"><a href="#添加GPIO" class="headerlink" title="添加GPIO"></a>添加GPIO</h4><p>终端输入: </p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">echo</span> <span class="token number">30</span> <span class="token operator">></span> <span class="token builtin class-name">export</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img "" class="lazyload placeholder" data-original="/photo/gpio/2.png" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"></p>
-<p>可以发现目录下出现了一个gpio30，这就代表添加gpio成功了。如果执行后没有添加上，没反应或提示不能添加，表示该gpio已经被作为其他功能使用。</p>
-<h4 id="操作GPIO"><a href="#操作GPIO" class="headerlink" title="操作GPIO"></a>操作GPIO</h4><p>终端输入:</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> gpio30<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img "" class="lazyload placeholder" data-original="/photo/gpio/3.png" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"></p>
-<p>使用ls命令可以查看到进去后目录下的几个文件如上图。</p>
-<h5 id="direction"><a href="#direction" class="headerlink" title="direction"></a>direction</h5><p>设置引脚输出输入方向<br>1、设置输入</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">echo</span> <span class="token keyword">in</span> <span class="token operator">></span> direction<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img "" class="lazyload placeholder" data-original="/photo/gpio/4.png" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"><br>检查是否设置成功</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">cat</span> direction<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img "" class="lazyload placeholder" data-original="/photo/gpio/5.png" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"><br>显示为in，则设置输入方向成功</p>
-<p>2、设置输出</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">echo</span> out <span class="token operator">></span> direction<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>检查是否成功同上</p>
-<h5 id="value"><a href="#value" class="headerlink" title="value"></a>value</h5><p>1、设置高电平</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">echo</span> <span class="token number">1</span> <span class="token operator">></span> value<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><font color='red'> 注意 </font> :该设置操作必须要上面输出输入设置为输出才能设置</p>
-<p><img "" class="lazyload placeholder" data-original="/photo/gpio/6.png" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"><br>如图，查询得知原来为低电平，value为0，设置后查询得知为1.设置成功。</p>
-<p>2、设置低电平</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">echo</span> <span class="token number">0</span> <span class="token operator">></span> value<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+        <h4 id="一、整体思路"><a href="#一、整体思路" class="headerlink" title="一、整体思路"></a>一、整体思路</h4><p>1、获取 /sys/bus/usb/devices 目录下文件信息。如下所示<br><img "" class="lazyload placeholder" data-original="/photo/usbinfo/1.png" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"><br>2、例如 1-1 usb设备信息，可以通过命令ls 1-1查看 </p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">ls</span> <span class="token number">1</span>-1
+<span class="token number">1</span>-1:1.0              bmAttributes         manufacturer
+authorized           busnum               maxchild
+avoid_reset_quirk    configuration        port
+bConfigurationValue  descriptors          product
+bDeviceClass         dev                  quirks
+bDeviceProtocol      devnum               removable
+bDeviceSubClass      devpath              remove
+bMaxPacketSize0      driver               speed
+bMaxPower            ep_00                subsystem
+bNumConfigurations   idProduct            uevent
+bNumInterfaces       idVendor             urbnum
+bcdDevice            ltm_capable          version<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img "" class="lazyload placeholder" data-original="/photo/usbinfo/2.png" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"><br>其中product中就是该usb设备类型<br>3、获取usb设备类型</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">cat</span> /1-1/product
+AltoBeam_WIFI<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><img "" class="lazyload placeholder" data-original="/photo/usbinfo/3.png" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif"><br>返回显示该设备是一个usb wifi。</p>
+<p>因此要知道设备上的usb设备数量以及类型就需要对这些文件进行读取。</p>
+<h4 id="二、代码实现"><a href="#二、代码实现" class="headerlink" title="二、代码实现"></a>二、代码实现</h4><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">SYS_USB_INFO</span>  <span class="token string">"/sys/bus/usb/devices"</span></span>
 
-<div class="note info"><p>当上述操作后如果，设置高电平应当是3.3V，测量电压却远低于3.3V，这个时候就需要直接操作寄存器来查看管脚复用情况，确认是否正确解复用为gpio模式</p></div>
+<span class="token keyword">static</span> UsbType_s g_astUsbType<span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
 
-<p>👇👇👇👇👇<br><a target="_blank" rel="noopener" href="https://marysufer.com/2021/07/15/guan-jiao-jie-fu-yong">管脚复用</a><br><a href="">命令读写寄存器</a></p>
+<span class="token keyword">typedef</span> <span class="token keyword">struct</span> 
+<span class="token punctuation">&#123;</span>
+    XM_CHAR aPort<span class="token punctuation">[</span><span class="token number">256</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    XM_CHAR aType<span class="token punctuation">[</span><span class="token number">256</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span> UsbType_s<span class="token punctuation">;</span>
 
+<span class="token comment">//获取usb设备类型,成功返回 0 ；失败返回 -1；</span>
+<span class="token keyword">static</span> XM_S32 <span class="token function">Usb_getState</span><span class="token punctuation">(</span><span class="token keyword">char</span><span class="token operator">*</span> pPath<span class="token punctuation">,</span><span class="token keyword">char</span><span class="token operator">*</span> pType<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    DIR <span class="token operator">*</span>pstDir <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+    <span class="token keyword">struct</span> <span class="token class-name">stat</span> ststat<span class="token punctuation">;</span>    
+    <span class="token keyword">struct</span> <span class="token class-name">dirent</span> <span class="token operator">*</span>pstDirent <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+    XM_CHAR aFileName<span class="token punctuation">[</span><span class="token number">256</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    XM_S32 fd <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+    XM_S32 ret <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+    
+    pstDir <span class="token operator">=</span> <span class="token function">opendir</span><span class="token punctuation">(</span>pPath<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    pstDirent <span class="token operator">=</span> <span class="token function">readdir</span><span class="token punctuation">(</span>pstDir<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token constant">NULL</span> <span class="token operator">!=</span> pstDirent<span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">strcmp</span><span class="token punctuation">(</span><span class="token string">"product"</span><span class="token punctuation">,</span>pstDirent<span class="token operator">-></span>d_name<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#123;</span>
+            <span class="token function">strcpy</span><span class="token punctuation">(</span>aFileName<span class="token punctuation">,</span>pPath<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">strcat</span><span class="token punctuation">(</span>aFileName<span class="token punctuation">,</span><span class="token string">"/product"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            fd <span class="token operator">=</span> <span class="token function">open</span><span class="token punctuation">(</span>aFileName<span class="token punctuation">,</span>O_RDONLY<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>fd <span class="token operator">></span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span><span class="token function">stat</span><span class="token punctuation">(</span>aFileName<span class="token punctuation">,</span> <span class="token operator">&amp;</span>ststat<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token punctuation">&#123;</span>
+                <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">read</span><span class="token punctuation">(</span>fd<span class="token punctuation">,</span> pType<span class="token punctuation">,</span>ststat<span class="token punctuation">.</span>st_size<span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token punctuation">&#123;</span>
+                    ret <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+            <span class="token punctuation">&#125;</span>
+            <span class="token keyword">break</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        pstDirent <span class="token operator">=</span> <span class="token function">readdir</span><span class="token punctuation">(</span>pstDir<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token function">close</span><span class="token punctuation">(</span>fd<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">closedir</span><span class="token punctuation">(</span>pstDir<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> ret<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment">//获取usb接口设备连接数以及设备类型</span>
+<span class="token comment">//有usb设备返回0，失败返回-1,pNum返回usb设备个数，ppstUsbType是usb设备信息</span>
+XM_S32 <span class="token function">LibXmDvr_Usb_getState</span><span class="token punctuation">(</span>XM_S32 <span class="token operator">*</span>pNum<span class="token punctuation">,</span>UsbType_s<span class="token operator">*</span><span class="token operator">*</span> ppstUsbType<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    DIR <span class="token operator">*</span>pstDir<span class="token punctuation">;</span>
+    <span class="token keyword">struct</span> <span class="token class-name">dirent</span> <span class="token operator">*</span>pstDirent <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+    XM_CHAR aPath<span class="token punctuation">[</span><span class="token number">256</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    XM_CHAR aType<span class="token punctuation">[</span><span class="token number">50</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    XM_S32 index <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+    pstDir <span class="token operator">=</span> <span class="token function">opendir</span><span class="token punctuation">(</span>SYS_USB_INFO<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    pstDirent <span class="token operator">=</span> <span class="token function">readdir</span><span class="token punctuation">(</span>pstDir<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token constant">NULL</span> <span class="token operator">!=</span> pstDirent<span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span> 
+        <span class="token function">memset</span><span class="token punctuation">(</span>aPath<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">256</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">strcpy</span><span class="token punctuation">(</span>aPath<span class="token punctuation">,</span>SYS_USB_INFO<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">strcat</span><span class="token punctuation">(</span>aPath<span class="token punctuation">,</span><span class="token string">"/"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">strcat</span><span class="token punctuation">(</span>aPath<span class="token punctuation">,</span>pstDirent<span class="token operator">-></span>d_name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">memset</span><span class="token punctuation">(</span>aType<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">Usb_getState</span><span class="token punctuation">(</span>aPath<span class="token punctuation">,</span>aType<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> index <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#123;</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">strstr</span><span class="token punctuation">(</span>aType<span class="token punctuation">,</span><span class="token string">"usbhc-nvtivot"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token punctuation">&#123;</span>
+                pstDirent <span class="token operator">=</span> <span class="token function">readdir</span><span class="token punctuation">(</span>pstDir<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">continue</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            <span class="token function">strcpy</span><span class="token punctuation">(</span>g_astUsbType<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">.</span>aPort<span class="token punctuation">,</span>pstDirent<span class="token operator">-></span>d_name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">strcpy</span><span class="token punctuation">(</span>g_astUsbType<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">.</span>aType<span class="token punctuation">,</span>aType<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            index<span class="token operator">++</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        pstDirent <span class="token operator">=</span> <span class="token function">readdir</span><span class="token punctuation">(</span>pstDir<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>    
+    <span class="token function">closedir</span><span class="token punctuation">(</span>pstDir<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token operator">*</span>pNum <span class="token operator">=</span> index<span class="token punctuation">;</span>
+    <span class="token operator">*</span>ppstUsbType <span class="token operator">=</span> g_astUsbType<span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>index <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token operator">&amp;&amp;</span><span class="token punctuation">(</span>index <span class="token operator">&lt;=</span> <span class="token number">10</span><span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token number">0</span> <span class="token operator">:</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
       </div>
       
         <div class="copyright">
@@ -670,7 +745,7 @@
     </li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
-    <a href="/2021/07/12/linux-yong-hu-tai-she-zhi-gpio/" target="_blank" title="Linux用户态设置gpio">https://fighthawklyl.github.io/2021/07/12/linux-yong-hu-tai-she-zhi-gpio/</a>
+    <a href="/2022/07/16/linux-usb-she-bei-shu-liang-he-lei-xing-shi-bie/" target="_blank" title="linux usb设备数量和类型识别">https://fighthawklyl.github.io/2022/07/16/linux-usb-she-bei-shu-liang-he-lei-xing-shi-bie/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明:   </strong>
@@ -688,24 +763,25 @@
 
 
 
+
+
   
-  <div class="post-nav-prev post-nav-item">
-    <div class="post-nav-img lazyload" data-original="/medias/9.jpg" style="background-size: cover; 
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img lazyload" data-original="/medias/13.jpg" style="background-size: cover; 
       background-position: center center;">
     </div>
-    <a href="/2021/07/15/guan-jiao-jie-fu-yong/" class="post-nav-link">
+    <a href="/2022/06/30/ming-ling-du-xie-ji-cun-qi/" class="post-nav-link">
       <div class="title">
-        <i class="fa fa-angle-left"></i> 上一篇:
-        <div>管脚复用</div>
+        下一篇: <i class="fa fa-angle-right"></i>
+        <div>命令读写寄存器</div>
       </div>
-      
       <!-- <div class="content">
-        管脚复用管脚复用指一个引脚具有多种功能，可以在不同时刻使用不同的功能(时分复用)，需要通过配置寄存器来开关芯片外部引脚和
+        一、devmem读寄存器 0xfc203000
+devmem  寄存器地址  数据长度（最大64位）
+devmem  0
       </div> -->
     </a>
   </div>
-
-
 
 </div>
 

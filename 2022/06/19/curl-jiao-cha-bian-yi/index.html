@@ -633,9 +633,15 @@
 <div class="note info"><p>–disable-threaded-resolver 应该和线程有关，安装时报了 Threaded resolver enabled butno thread library found 这个错，所以禁用了} {% note info</p></div>
 <div class="note info"><p>–with-ssl 指定ssl目录。</p></div>
 
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./configure --target<span class="token operator">=</span>arm-ca53-linux --host<span class="token operator">=</span>arm-ca53-linux  --prefix<span class="token operator">=</span>/home/liyongli/SVN/curl331 --disable-threaded-resolver <span class="token assign-left variable">CC</span><span class="token operator">=</span>arm-ca53-linux-uclibcgnueabihf-novatek-8.4-gcc --with-ssl<span class="token operator">=</span>/home/liyongli/SVN/openssl331 --enable-static<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./configure --target<span class="token operator">=</span>arm-ca53-linux --host<span class="token operator">=</span>arm-ca53-linux  --prefix<span class="token operator">=</span>/home/liyongli/SVN/curl331 --disable-threaded-resolver <span class="token assign-left variable">CC</span><span class="token operator">=</span>arm-ca53-linux-uclibcgnueabihf-novatek-8.4-gcc --with-ssl<span class="token operator">=</span>/home/liyongli/SVN/openssl331 --enable-static  -disable-dict --disable-ftp --disable-imap --disable-ldap --disable-ldaps --disable-pop3 --disable-proxy --disable-rtsp --disable-smtp --disable-telnet --disable-tftp --disable-zlib --without-ca-bundle --without-gnutls --without-libidn --without-librtmp --without-libssh2 --without-nss --without-zlib<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p><a href="">opessl交叉编译</a></p>
+<p>配置完成，编译</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">make</span> 
+<span class="token function">make</span> <span class="token function">install</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>这样编译是动态库链接编译，如果需要静态编译，得到不依赖库，的可执行curl工具还需要修改文件<br>修改 curl-7.82.0/Makefile 和 curl-7.82.0/src/Makefile文件中,CFLAGS编译参数添加-static -static-libgcc</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">CFLAGS <span class="token operator">=</span> -Werror-implicit-function-declaration -O2 -Wno-system-headers -static -static-libgcc<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>还需要删除编译出来openssl库中的动态库，既可以静态编译curl可执行程序。</p>
+<p><a target="_blank" rel="noopener" href="https://marysufer.com/2022/06/18/openssl-jiao-cha-bian-yi/">opessl交叉编译</a></p>
 
       </div>
       
@@ -663,6 +669,25 @@
 <div class="post-nav">
 
 
+
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img lazyload" data-original="/medias/13.jpg" style="background-size: cover; 
+      background-position: center center;">
+    </div>
+    <a href="/2022/06/30/ming-ling-du-xie-ji-cun-qi/" class="post-nav-link">
+      <div class="title">
+        <i class="fa fa-angle-left"></i> 上一篇:
+        <div>命令读写寄存器</div>
+      </div>
+      
+      <!-- <div class="content">
+        一、devmem读寄存器 0xfc203000
+devmem  寄存器地址  数据长度（最大64位）
+devmem  0
+      </div> -->
+    </a>
+  </div>
 
 
 
