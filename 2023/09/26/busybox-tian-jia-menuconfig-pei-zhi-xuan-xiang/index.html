@@ -1,0 +1,2598 @@
+<!DOCTYPE html>
+<html>
+  <!-- meta/link... -->
+  
+
+
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+  <title>busybox编译以及添加menuconfig配置选项 | marysufer&#39;s blog</title>
+
+  
+    
+<link rel="stylesheet" href="/js/aos/aos.css">
+
+  
+
+  <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  
+    <script>
+        var themeModelId = '';
+        if (themeModelId) {
+            localStorage.setItem('modelId', themeModelId);
+        }
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/gh/yuang01/live2d-widget@latest/autoload.js"></script>
+    <script>
+        var live2dOpen = eval('true') || false;
+        if (!live2dOpen) {
+            localStorage.setItem('waifu-display', 1609323474481);
+        }
+    </script>
+  
+  
+<link rel="stylesheet" href="/css/animate.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/js/shareJs/share.min.css">
+
+  
+  <style>
+        @media (max-width: 992px) {
+            #waifu {
+                display: none;
+            }
+        }
+    </style>
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+  
+  <!-- 依赖于jquery和vue -->
+  <script src="/js/jquery3.5.1.js"></script>
+  <script src="/js/vue2.6.11.js"></script>
+  
+  <body>
+    <!-- 预加载动画 -->
+    <!-- 页面预加载动画 -->
+
+<div id='loader'>
+  <link rel="stylesheet" href="/js/loaded/index.css" >
+  <div class="loading-left-bg"></div>
+  <div class="loading-right-bg"></div>
+  <div class="spinner-box">
+    <div class="configure-border-1">
+      <div class="configure-core"></div>
+    </div>
+    <div class="configure-border-2">
+      <div class="configure-core"></div>
+    </div>
+    <div class="loading-word">加载中...</div>
+  </div>
+</div>
+
+<script>
+  var endLoading = function () {
+  document.body.style.overflow = 'auto';
+  document.getElementById('loader').classList.add("loading");
+  }
+  window.addEventListener('load',endLoading);
+</script>
+
+    
+    <!-- 判断是否为暗黑风格 -->
+    <!-- 判断是否为黑夜模式 -->
+<script>
+  let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+
+  if (isDark) {
+    $(document.body).addClass('darkModel');
+  }
+</script>
+
+    <!-- 头部导航等 -->
+    
+<header class="header " id="navHeader"
+  style="position: fixed;
+  left: 0; top: 0; z-index: 10;width: 100%;"
+>
+  <div class="header-content">
+    <div class="bars">
+      <div id="appDrawer" class="sidebar-image">
+  <i class="fa fa-bars" aria-hidden="true" @click="showDialogDrawer"></i>
+  <transition name="fade">
+    <div class="drawer-box_mask" v-cloak style="display: none;" v-show="visible" @click.self="cancelDialogDrawer">
+    </div>
+  </transition>
+  <div class="drawer-box" :class="{'active': visible}">
+    <div class="drawer-box-head bg-color">
+      <img class="drawer-box-head_logo" src="/medias/logo.png" alt="logo">
+      <h3 class="drawer-box-head_title">marysufer&#39;s blog</h3>
+      <h5 class="drawer-box-head_desc"></h5>
+    </div>
+    
+    <div class="drawer-box-content">
+      <ul class="drawer-box-content_menu">
+        
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/" class="drawer-menu-item-link">
+                  
+                    <i class="fa fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">首页</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/archives" class="drawer-menu-item-link">
+                  
+                    <i class="fa fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/tags" class="drawer-menu-item-link">
+                  
+                    <i class="fa fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/categories" class="drawer-menu-item-link">
+                  
+                    <i class="fa fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/about" class="drawer-menu-item-link">
+                  
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                  
+                  <span class="name">关于</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/friends" class="drawer-menu-item-link">
+                  
+                    <i class="fa fa-plug" aria-hidden="true"></i>
+                  
+                  <span class="name">友情链接</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="javascript:;" class="drawer-menu-item-link has-children" @click="openOrCloseMenu(6)">
+                  <span>
+                    
+                    <span class="name">👇更多</span>
+                  </span>
+                  <i class="fa fa-chevron-left arrow " :class="{'icon-rotate': isOpen(6)}" aria-hidden="true"></i>
+                </a>
+                <ul class="drawer-sub-menu" v-if="isOpen(6)">
+                  
+                  <li>
+                    <a href="/gallery">
+                      
+                      <span>💻图库</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/huoban">
+                      
+                      <span>🤝友情连接</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/me">
+                      
+                      <span>🤡关于我</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a target="_blank" rel="noopener" href="http://baidu.com">
+                      
+                      <span>🔍百度</span>
+                    </a>
+                  </li>
+                  
+                </ul>
+              
+            </li>
+          
+        
+        <li class="drawer-box-content_item">
+          <a target="_blank" rel="noopener" href="https://github.com/fighthawklyl">
+            <i class="fa fa-github" aria-hidden="true"></i>
+            <span>Github</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDrawer',
+    data: {
+      visible: false,
+      top: 0,
+      openArr: [],
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      isOpen(index) {
+        if (this.openArr.includes(index)) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      openOrCloseMenu(curIndex) {
+        const index = this.openArr.indexOf(curIndex);
+        if (index !== -1) {
+          this.openArr.splice(index, 1);
+        } else {
+          this.openArr.push(curIndex);
+        }
+      },
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'width: 100%; height: 100%;overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      }
+    },
+    created() {}
+  })
+</script>
+
+    </div>
+    <div class="blog-title" id="author-avatar">
+      
+        <div class="avatar">
+          <img src="/medias/logo.png" alt="logo">
+        </div>
+      
+      <a href="/" class="logo">marysufer&#39;s blog</a>
+    </div>
+    <nav class="navbar">
+      <ul class="menu">
+        
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/" class="menu-item-link">
+                  
+                    <i class="fa fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">首页</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/archives" class="menu-item-link">
+                  
+                    <i class="fa fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/tags" class="menu-item-link">
+                  
+                    <i class="fa fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/categories" class="menu-item-link">
+                  
+                    <i class="fa fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/about" class="menu-item-link">
+                  
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                  
+                  <span class="name">关于</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/friends" class="menu-item-link">
+                  
+                    <i class="fa fa-plug" aria-hidden="true"></i>
+                  
+                  <span class="name">友情链接</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="javascript:;" class="menu-item-link">
+                  
+                  <span class="name">👇更多</span>
+                  <i class="fa fa-chevron-down arrow" aria-hidden="true"></i>
+                </a>
+                <ul class="sub-menu">
+                  
+                  <li>
+                    <a href="/gallery">
+                      
+                      <span>💻图库</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/huoban">
+                      
+                      <span>🤝友情连接</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/me">
+                      
+                      <span>🤡关于我</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a target="_blank" rel="noopener" href="http://baidu.com">
+                      
+                      <span>🔍百度</span>
+                    </a>
+                  </li>
+                  
+                </ul>
+              
+            </li>
+          
+        
+      </ul>
+      
+      
+        <div id="appSearch">
+  <div class="search"  @click="showDialog()"><i class="fa fa-search" aria-hidden="true"></i></div>
+  <transition name="fade">
+    <div class="message-box_wrapper" style="display: none;" v-cloak v-show="dialogVisible" @click.self="cancelDialogVisible()">
+      <div class="message-box animated bounceInDown">
+        <!-- <div class="close" style="overflow: hidden;">
+          <i class="fa fa-close" aria-hidden="true" style="float:right;" @click.self="cancelDialogVisible()"></i>
+        </div> -->
+        <h2>
+          <span>
+            <i class="fa fa-search" aria-hidden="true"></i>
+            <span class="title">本地搜索</span>
+          </span>
+          <i class="fa fa-close close" style="float:right;" aria-hidden="true" @click.self="cancelDialogVisible()"></i>
+        </h2>
+        <form class="site-search-form">
+          <input type="text"
+            placeholder="请输入关键字"
+            id="local-search-input" 
+            @click="getSearchFile()"
+            class="st-search-input"
+            v-model="searchInput"
+          />
+        </form>
+        <div class="result-wrapper">
+          <div id="local-search-result" class="local-search-result-cls"></div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+<script src="/js/local_search.js"></script>
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appSearch',
+    data: {
+      dialogVisible: false,
+      searchInput: '',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      showDialog() {
+        this.dialogVisible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'overflow: hidden;';
+      },
+      getSearchFile() {
+        if (!this.searchInput) {
+          getSearchFile("/search.xml");
+        }
+      },
+      cancelDialogVisible() {
+        this.dialogVisible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+    },
+    created() {}
+  })
+</script>
+<!-- 解决刷新页面闪烁问题，可以在元素上添加display: none, 或者用vue.extend方法，详情：https://blog.csdn.net/qq_31393401/article/details/81017912 -->
+<!-- 下面是搜索基本写法 -->
+<!-- <script type="text/javascript" id="local.search.active">
+  var inputArea = document.querySelector("#local-search-input");
+  inputArea.onclick   = function(){ getSearchFile(); this.onclick = null }
+  inputArea.onkeydown = function(){ if(event.keyCode == 13) return false }
+</script> -->
+
+      
+
+    </nav>
+  </div>
+  
+  <a target="_blank" rel="noopener" href="https://github.com/fighthawklyl" class="github-corner color-primary" aria-label="View source on GitHub"><svg width="60" height="60" viewBox="0 0 250 250" style="fill:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+  
+    <div id="he-plugin-simple"></div>
+    <script>
+      WIDGET = {
+        CONFIG: {
+          "modules": "012",
+          "background": 5,
+          "tmpColor": "4A4A4A",
+          "tmpSize": 16,
+          "cityColor": "4A4A4A",
+          "citySize": 16,
+          "aqiSize": 16,
+          "weatherIconSize": 24,
+          "alertIconSize": 18,
+          "padding": "10px 10px 10px 10px",
+          "shadow": "1",
+          "language": "auto",
+          "borderRadius": 5,
+          "fixed": "false",
+          "vertical": "middle",
+          "horizontal": "center",
+          "key": "2784dd3fcb1e4f0f9a9b579bf69641f2"
+        }
+      }
+    </script>
+    <script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script> 
+    
+
+    <!-- 当头部导航设置为背景透明的时候  -->
+    
+      <script src="/js/header/index.js"></script>
+    
+</header>
+
+    <!-- 内容区域 -->
+    <main class="main" style="margin-top: 0;">
+      
+ <!-- prismjs 代码高亮 -->
+ 
+    
+    <link href="/js/prism/prism-line-numbers.css" rel="stylesheet">
+    
+        <link href="/js/prism/prism-tomorrow.min.css" rel="stylesheet">
+    
+
+    <style>
+        pre[class*="language-"] {
+            overflow-y: hidden;
+        }
+        .line-numbers .line-numbers-rows {
+            border: none;
+        }
+    </style>
+  
+
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+<!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header lazyload" id="thumbnail_canvas" data-original="/medias/13.jpg" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
+  
+  <div class="title-box">
+    <span class="title">
+      busybox编译以及添加menuconfig配置选项
+    </span>
+  </div>
+  
+  
+    <script src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+<div class="row justify-position">
+  <div class="main-content">
+    <article class="post post-detail">
+      
+      <div class="post-meta">
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+        <span class="post-time">2023-09-26</span>
+      </div>
+      
+      <div class="post-tags-categories">
+        
+        <div class="tags">
+          <i class="iconfont icontag"></i>
+          
+            <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" class="">
+              嵌入式
+            </a>
+          
+            <a href="/tags/busybox/" class="">
+              busybox
+            </a>
+          
+            <a href="/tags/romfs/" class="">
+              romfs
+            </a>
+          
+            <a href="/tags/rootfs/" class="">
+              rootfs
+            </a>
+          
+            <a href="/tags/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/" class="">
+              文件系统
+            </a>
+          
+            <a href="/tags/telnetd/" class="">
+              telnetd
+            </a>
+          
+            <a href="/tags/udhcpd/" class="">
+              udhcpd
+            </a>
+          
+        </div>
+        
+        
+        <div class="categories">
+          <i class="iconfont iconbookmark1"></i>
+          
+            <a href="/categories/busybox/" class="">
+              busybox
+            </a>
+          
+        </div>
+        
+      </div>
+      <div class="post-content">
+        <h4 id="一、busybox介绍"><a href="#一、busybox介绍" class="headerlink" title="一、busybox介绍"></a>一、busybox介绍</h4><p>Busybox是一个开源项目，遵循GPL v2协议。Busybox将众多的UNIX命令集合进了一个很小的可执行程序中，可以用来替代GNU fileutils、shellutils等工具集。Busybox中各种命令与相应的GNU工具相比，所能提供的选项比较少，但是对于一般的应用场景也足够了。Busybox主要用于嵌入式系统的开发中。</p>
+<h4 id="二、busybox目录结构"><a href="#二、busybox目录结构" class="headerlink" title="二、busybox目录结构"></a>二、busybox目录结构</h4><table>
+    <tr>
+        <td>序号</td> 
+        <td>目录名称</td>
+        <td>功能说明</td>
+   </tr>
+    <tr>
+        <td > 1 </td>    
+        <td >applets</td> 
+        <td >实现applets框架的文件。目录中包含了几个main()的文件</td>  
+    </tr>
+    <tr>
+        <td >2</td>
+        <td >applets_sh</td>    
+        <td >此目录包含了几个作为shell脚本实现的applet示例。在“make install”时不会被自动安装，需要使用时，手动处理</td>  
+    </tr>
+    <tr>
+        <td >3</td>
+        <td >arch</td>   
+        <td >包含用于不同体系架构的makefile文件。约束busybox在不同架构体系下的编译构建过程</td>   
+    </tr>
+    <tr>
+        <td >4</td>
+        <td >archival</td>   
+        <td >与压缩相关命令的实现源文件</td>   
+    </tr>
+    <tr>
+        <td >5</td>
+        <td >configs</td>   
+        <td >busybox自带的默认配置文件</td>   
+    </tr>
+    <tr>
+        <td >6</td>
+        <td >console-tools</td>   
+        <td >与控制台相关的一些命令</td>   
+    </tr>
+    <tr>
+        <td >7</td>
+        <td >coreutils</td>   
+        <td >常用的一些核心命令。例如chgrp、rm等</td>   
+    </tr>
+    <tr>
+        <td >8</td>
+        <td >debianutils</td>   
+        <td >针对Debian的套件。</td>   
+    </tr>
+    <tr>
+        <td >9</td>
+        <td >e2fsprogs</td>   
+        <td >针对Linux Ext2 FS prog的命令。例如chattr、lsattr</td>   
+    </tr>
+    <tr>
+        <td >10</td>
+        <td >editors</td>   
+        <td >常用的编辑命令。例如diff、vi等</td>   
+    </tr>
+    <tr>
+        <td >11</td>
+        <td >findutils</td>   
+        <td >用于查找的命令</td>   
+    </tr>
+    <tr>
+        <td >12</td>
+        <td >include</td>   
+        <td >busybox项目的头文件</td>   
+    </tr>
+    <tr>
+        <td >13</td>
+        <td >init</td>   
+        <td >init进程的实现源码目录</td>   
+    </tr>
+    <tr>
+        <td >14</td>
+        <td >klibc-utils</td>   
+        <td >klibc命令套件</td>   
+    </tr>
+    <tr>
+        <td >15</td>
+        <td >libbb</td>   
+        <td >与busybox实现相关的库文件</td>   
+    </tr>
+    <tr>
+        <td >16</td>
+        <td >libpwdgrp</td>   
+        <td >libpwdgrp相关的命令</td>   
+    </tr>
+    <tr>
+        <td >17</td>
+        <td >loginutils</td>   
+        <td >与用户管理相关的命令</td>   
+    </tr>
+    <tr>
+        <td >18</td>
+        <td >mailutils</td>   
+        <td >与mail相关的命令套件</td>   
+    </tr>
+    <tr>
+        <td >19</td>
+        <td >miscutils</td>   
+        <td >该文件下是一些杂项命令，针对特定应用场景</td>   
+    </tr>
+    <tr>
+        <td >20</td>
+        <td >modutils</td>   
+        <td >与模块相关的命令</td>   
+    </tr>
+    <tr>
+        <td >21</td>
+        <td >networking</td>   
+        <td >与网络相关的命令，例如arp</td>   
+    </tr>
+    <tr>
+        <td >22</td>
+        <td >printutils</td>   
+        <td >Print相关的命令</td>   
+    </tr>
+    <tr>
+        <td >23</td>
+        <td >procps</td>   
+        <td >与内存、进程相关的命令</td>   
+    </tr>
+    <tr>
+        <td >24</td>
+        <td >runit</td>   
+        <td >与Runit实现相关的命令</td>   
+    </tr>
+    <tr>
+        <td >25</td>
+        <td >shell</td>   
+        <td >与shell相关的命令</td>   
+    </tr>
+    <tr>
+        <td >26</td>
+        <td >sysklogd</td>   
+        <td >系统日志记录工具相关的命令</td>   
+    </tr>
+    <tr>
+        <td >27</td>
+        <td >util-linux</td>   
+        <td >Linux下常用的命令，主要与文件系统操作相关的命令</td>   
+    </tr>
+</table>
+
+<h4 id="三、编译busybox-（BusyBox-1-33-1）"><a href="#三、编译busybox-（BusyBox-1-33-1）" class="headerlink" title="三、编译busybox （BusyBox-1.33.1）"></a>三、编译busybox （BusyBox-1.33.1）</h4><h5 id="1、make-menuconfig"><a href="#1、make-menuconfig" class="headerlink" title="1、make menuconfig"></a>1、make menuconfig</h5><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">make</span> menuconfig<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img "" class="lazyload placeholder" data-original="/photo/busybox/make_menuconfig.png" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif" alt="make menuconfig界面"></p>
+<p>配置install路径，首先选择Settings—&gt;<br><img "" class="lazyload placeholder" data-original="/photo/busybox/menuconfig_Settings.png" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif" alt="Settings---&gt;"><br>然后选择Installation Options中的Destination path for ‘make install’选项配置install目录。<br><img "" class="lazyload placeholder" data-original="/photo/busybox/menuconfig_Install_opt.png" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif" alt="Installation Options"><br>我们将其设置为romfs<br><img "" class="lazyload placeholder" data-original="/photo/busybox/menuconfig_Install_opt_setting.png" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif" alt="set ./romfs"><br>保存config后可以再目录中看到一个.config文件</p>
+<h5 id="3、编译和建立romfs目录"><a href="#3、编译和建立romfs目录" class="headerlink" title="3、编译和建立romfs目录"></a>3、编译和建立romfs目录</h5><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#建立romfs目录</span>
+<span class="token function">mkdir</span> romfs
+<span class="token builtin class-name">cd</span> rootfs
+<span class="token comment">#建立一些常用目录</span>
+<span class="token function">mkdir</span> root home bin sbin etc dev usr lib tmp mnt sys proc  
+<span class="token function">mkdir</span> usr/lib usr/bin
+
+<span class="token comment">#配置交叉编译器，修改Makefile文件</span>
+ARCH ?<span class="token operator">=</span> arm
+CROSS_COMPILE ?<span class="token operator">=</span> <span class="token comment">#指定交叉编译器路径</span>
+
+<span class="token comment">#编译</span>
+<span class="token comment">#make 后就会产生busybox</span>
+<span class="token function">make</span>
+<span class="token comment">#make install后就产生busybox及每个命令的软链接。</span>
+<span class="token function">make</span> <span class="token function">install</span>
+
+<span class="token builtin class-name">cd</span> etc
+<span class="token comment">#拷贝examples/bootfloppy/etc文件到etc</span>
+<span class="token function">cp</span> -rf <span class="token punctuation">..</span>/<span class="token punctuation">..</span>/examples/bootfloppy/etc/* ./
+<span class="token comment">#passwd、shadow、group等文件也需要准备放到etc下</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>拷贝examples/inittab 到 etc下,做一些必要的修改</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># /etc/inittab init(8) configuration for BusyBox</span>
+<span class="token comment">#</span>
+<span class="token comment"># Copyright (C) 1999-2004 by Erik Andersen &lt;andersen@codepoet.org></span>
+<span class="token comment">#</span>
+<span class="token comment">#</span>
+<span class="token comment"># Note, BusyBox init doesn't support runlevels.  The runlevels field is</span>
+<span class="token comment"># completely ignored by BusyBox init. If you want runlevels, use sysvinit.</span>
+<span class="token comment">#</span>
+<span class="token comment">#</span>
+<span class="token comment"># Format for each entry: &lt;id>:&lt;runlevels>:&lt;action>:&lt;process></span>
+<span class="token comment">#</span>
+<span class="token comment"># &lt;id>: WARNING: This field has a non-traditional meaning for BusyBox init!</span>
+<span class="token comment">#</span>
+<span class="token comment">#	The id field is used by BusyBox init to specify the controlling tty for</span>
+<span class="token comment">#	the specified process to run on.  The contents of this field are</span>
+<span class="token comment">#	appended to "/dev/" and used as-is.  There is no need for this field to</span>
+<span class="token comment">#	be unique, although if it isn't you may have strange results.  If this</span>
+<span class="token comment">#	field is left blank, then the init's stdin/out will be used.</span>
+<span class="token comment">#</span>
+<span class="token comment"># &lt;runlevels>: The runlevels field is completely ignored.</span>
+<span class="token comment">#</span>
+<span class="token comment"># &lt;action>: Valid actions include: sysinit, wait, once, respawn, askfirst,</span>
+<span class="token comment">#                                  shutdown, restart and ctrlaltdel.</span>
+<span class="token comment">#</span>
+<span class="token comment">#	sysinit actions are started first, and init waits for them to complete.</span>
+<span class="token comment">#	wait actions are started next, and init waits for them to complete.</span>
+<span class="token comment">#	once actions are started next (and not waited for).</span>
+<span class="token comment">#</span>
+<span class="token comment">#	askfirst and respawn are started next.</span>
+<span class="token comment">#	For askfirst, before running the specified process, init displays</span>
+<span class="token comment">#	the line "Please press Enter to activate this console"</span>
+<span class="token comment">#	and then waits for the user to press enter before starting it.</span>
+<span class="token comment">#</span>
+<span class="token comment">#	shutdown actions are run on halt/reboot/poweroff, or on SIGQUIT.</span>
+<span class="token comment">#	Then the machine is halted/rebooted/powered off, or for SIGQUIT,</span>
+<span class="token comment">#	restart action is exec'ed (init process is replaced by that process).</span>
+<span class="token comment">#	If no restart action specified, SIGQUIT has no effect.</span>
+<span class="token comment">#</span>
+<span class="token comment">#	ctrlaltdel actions are run when SIGINT is received</span>
+<span class="token comment">#	(this might be initiated by Ctrl-Alt-Del key combination).</span>
+<span class="token comment">#	After they complete, normal processing of askfirst / respawn resumes.</span>
+<span class="token comment">#</span>
+<span class="token comment">#	Note: unrecognized actions (like initdefault) will cause init to emit</span>
+<span class="token comment">#	an error message, and then go along with its business.</span>
+<span class="token comment">#</span>
+<span class="token comment"># &lt;process>: Specifies the process to be executed and it's command line.</span>
+<span class="token comment">#</span>
+<span class="token comment"># Note: BusyBox init works just fine without an inittab. If no inittab is</span>
+<span class="token comment"># found, it has the following default behavior:</span>
+<span class="token comment">#	::sysinit:/etc/init.d/rcS</span>
+<span class="token comment">#	::askfirst:/bin/sh</span>
+<span class="token comment">#	::ctrlaltdel:/sbin/reboot</span>
+<span class="token comment">#	::shutdown:/sbin/swapoff -a</span>
+<span class="token comment">#	::shutdown:/bin/umount -a -r</span>
+<span class="token comment">#	::restart:/sbin/init</span>
+<span class="token comment">#	tty2::askfirst:/bin/sh</span>
+<span class="token comment">#	tty3::askfirst:/bin/sh</span>
+<span class="token comment">#	tty4::askfirst:/bin/sh</span>
+<span class="token comment">#</span>
+<span class="token comment"># Boot-time system configuration/initialization script.</span>
+<span class="token comment"># This is run first except when booting in single-user mode.</span>
+<span class="token comment">#</span>
+::sysinit:/etc/init.d/rcS
+
+<span class="token comment"># /bin/sh invocations on selected ttys</span>
+<span class="token comment">#</span>
+<span class="token comment"># Note below that we prefix the shell commands with a "-" to indicate to the</span>
+<span class="token comment"># shell that it is supposed to be a login shell.  Normally this is handled by</span>
+<span class="token comment"># login, but since we are bypassing login in this case, BusyBox lets you do</span>
+<span class="token comment"># this yourself...</span>
+<span class="token comment">#</span>
+<span class="token comment"># Start an "askfirst" shell on the console (whatever that may be)</span>
+<span class="token comment">#askfirst类似respawn，主要用途是减少系统上执行的终端应用程序的数量。它将会促使init在控制台上显示“Please press Enter to active this console”的信息，并在重新启动进程之前等待用户按下“enter”键</span>
+<span class="token comment">#::askfirst:-/bin/sh</span>
+<span class="token comment"># Start an "askfirst" shell on /dev/tty2-4</span>
+<span class="token comment">#</span>
+<span class="token comment">#tty2::askfirst:-/bin/sh</span>
+<span class="token comment">#tty3::askfirst:-/bin/sh</span>
+<span class="token comment">#tty4::askfirst:-/bin/sh</span>
+
+<span class="token comment"># /sbin/getty invocations for selected ttys</span>
+<span class="token comment">#屏蔽</span>
+<span class="token comment">#tty4::respawn:/sbin/getty 38400 tty5</span>
+<span class="token comment">#tty5::respawn:/sbin/getty 38400 tty6</span>
+
+<span class="token comment"># Example of how to put a getty on a serial line (for a terminal)</span>
+::respawn:/sbin/getty -L ttyS000 <span class="token number">115200</span> vt100 -n root -I <span class="token string">"Auto login as root ..."</span>
+<span class="token comment">#::respawn:/sbin/getty -L ttyS0 9600 vt100</span>
+<span class="token comment">#::respawn:/sbin/getty -L ttyS1 9600 vt100</span>
+<span class="token comment">#</span>
+<span class="token comment"># Example how to put a getty on a modem line.</span>
+<span class="token comment">#::respawn:/sbin/getty 57600 ttyS2</span>
+
+<span class="token comment"># Stuff to do when restarting the init process</span>
+::restart:/sbin/init
+
+<span class="token comment"># Stuff to do before rebooting</span>
+::ctrlaltdel:/sbin/reboot
+::shutdown:/bin/umount -a -r
+::shutdown:/sbin/swapoff -a<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>拷贝交叉编译环境下的lib库到romfs/lib目录下</p>
+<h4 id="四、busybox的menuconfig添加自定义编译选项"><a href="#四、busybox的menuconfig添加自定义编译选项" class="headerlink" title="四、busybox的menuconfig添加自定义编译选项"></a>四、busybox的menuconfig添加自定义编译选项</h4><p>以telnetd端口和udhcpd mac限制和hostname限制为例</p>
+<h5 id="1、Config-src-和-Config-in"><a href="#1、Config-src-和-Config-in" class="headerlink" title="1、Config.src 和 Config.in"></a>1、Config.src 和 Config.in</h5><p>Config.src文件中保存着make menuconfig配置界面上的配置<br>Config.in是通过Config.src和.c源码中的一些config配置结合产生的。<br>下面以networking/Config.src为例大致说明配置的含义</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#</span>
+<span class="token comment"># For a description of the syntax of this configuration file,</span>
+<span class="token comment"># see docs/Kconfig-language.txt.</span>
+<span class="token comment">#</span>
+
+<span class="token comment">#菜单选项</span>
+menu <span class="token string">"Networking Utilities"</span> 
+
+config FEATURE_IPV6
+	bool <span class="token string">"Enable IPv6 support"</span>
+	default y
+	<span class="token builtin class-name">help</span>
+	Enable IPv6 support <span class="token keyword">in</span> busybox.
+	This adds IPv6 support <span class="token keyword">in</span> the networking applets.
+
+config FEATURE_UNIX_LOCAL
+	bool <span class="token string">"Enable Unix domain socket support (usually not needed)"</span>
+	default n
+	<span class="token builtin class-name">help</span>
+	Enable Unix domain socket support <span class="token keyword">in</span> all busybox networking
+	applets.  Address of the form local:/path/to/unix/socket
+	will be recognized.
+
+	This extension is almost never used <span class="token keyword">in</span> real world usage.
+	You <span class="token function">most</span> likely want to say N.
+
+config FEATURE_PREFER_IPV4_ADDRESS
+	bool <span class="token string">"Prefer IPv4 addresses from DNS queries"</span>
+	default y
+	depends on FEATURE_IPV6
+	<span class="token builtin class-name">help</span>
+	Use IPv4 address of network <span class="token function">host</span> <span class="token keyword">if</span> it has one.
+
+	If this option is off, the first returned address will be used.
+	This may cause problems when your DNS server is IPv6-capable and
+	is returning IPv6 <span class="token function">host</span> addresses too. If IPv6 address
+	precedes IPv4 one <span class="token keyword">in</span> DNS reply, busybox network applets
+	<span class="token punctuation">(</span>e.g. <span class="token function">wget</span><span class="token punctuation">)</span> will use IPv6 address. On an IPv6-incapable <span class="token function">host</span>
+	or network applets will fail to connect to the <span class="token function">host</span>
+	using IPv6 address.
+
+config VERBOSE_RESOLUTION_ERRORS
+	bool <span class="token string">"Verbose resolution errors"</span>
+	default n
+	<span class="token builtin class-name">help</span>
+	Enable <span class="token keyword">if</span> you are not satisfied with simplistic
+	<span class="token string">"can't resolve 'hostname.com'"</span> and want to know more.
+	This may increase size of your executable a bit.
+
+config FEATURE_TLS_SHA1 <span class="token comment">#config配置名</span>
+	bool <span class="token string">"In TLS code, support ciphers which use deprecated SHA1"</span> <span class="token comment">#数据类型是bool型所以参数是 y和n</span>
+	depends on TLS  <span class="token comment">#依赖TLS开启该配置才可以生效配置。</span>
+	default n       <span class="token comment">#默认配置为n,不开启</span>
+	<span class="token builtin class-name">help</span>   <span class="token comment">#help介绍该配置</span>
+	Selecting this option increases interoperability with very old
+	servers, but slightly increases code size.
+
+	Most TLS servers support SHA256 today <span class="token punctuation">(</span><span class="token number">2018</span><span class="token punctuation">)</span>, since SHA1 is
+	considered possibly insecure <span class="token punctuation">(</span>although not yet definitely broken<span class="token punctuation">)</span>.
+<span class="token comment">#INSERT</span>
+<span class="token comment">#source networking/udhcp/Config.in</span>
+<span class="token comment">#是将里面一级的目录中的配置插入进本文件，所有配置都是如此一层一层目录中插入过来。也能将c源文件中注释语句中的config插入</span>
+INSERT
+
+<span class="token builtin class-name">source</span> networking/udhcp/Config.in
+
+config IFUPDOWN_UDHCPC_CMD_OPTIONS
+	string <span class="token string">"ifup udhcpc command line options"</span>
+	default <span class="token string">"-R -n"</span>
+	depends on IFUP <span class="token operator">||</span> IFDOWN
+	<span class="token builtin class-name">help</span>
+	Command line options to pass to udhcpc from ifup.
+	Intended to alter options not available <span class="token keyword">in</span> /etc/network/interfaces.
+	<span class="token punctuation">(</span>IE: --syslog --background etc<span class="token punctuation">..</span>.<span class="token punctuation">)</span>
+
+endmenu<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="2、Kbuild-src和Kbuild"><a href="#2、Kbuild-src和Kbuild" class="headerlink" title="2、Kbuild.src和Kbuild"></a>2、Kbuild.src和Kbuild</h5><p>Kbuild.src是更具配置决定某个源文件是否要编译的配置文件，比如添加新的源文件要通过配置来控制就需要再这边添加<br>Kbuild是由Kbuild.src和递归当前源文件下的配置而成<br>以networking/udhcp/Kbuild.src为例</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># Makefile for busybox</span>
+<span class="token comment">#</span>
+<span class="token comment"># Copyright (C) 1999-2004 by Erik Andersen &lt;andersen@codepoet.org></span>
+<span class="token comment">#</span>
+<span class="token comment"># Licensed under GPLv2 or later, see file LICENSE in this source tree.</span>
+<span class="token comment">#</span>
+
+lib-y:<span class="token operator">=</span>
+
+<span class="token comment">#INSERT 可以插入.C源文件中注释中的Kbuild配置生成Kbuild，一层一层的生成后，递归后就得到所有要编译进去的文件</span>
+INSERT
+<span class="token comment">#$(CONFIG_UDHCPC)就是再makeconfig所配置的，为y或者n</span>
+lib-<span class="token variable"><span class="token variable">$(</span>CONFIG_UDHCPC<span class="token variable">)</span></span>     <span class="token operator">+=</span> common.o packet.o signalpipe.o socket.o
+lib-<span class="token variable"><span class="token variable">$(</span>CONFIG_UDHCPD<span class="token variable">)</span></span>     <span class="token operator">+=</span> common.o packet.o signalpipe.o socket.o
+
+lib-<span class="token variable"><span class="token variable">$(</span>CONFIG_UDHCPC<span class="token variable">)</span></span>     <span class="token operator">+=</span> dhcpc.o
+lib-<span class="token variable"><span class="token variable">$(</span>CONFIG_UDHCPD<span class="token variable">)</span></span>     <span class="token operator">+=</span> dhcpd.o arpping.o
+lib-<span class="token variable"><span class="token variable">$(</span>CONFIG_DUMPLEASES<span class="token variable">)</span></span> <span class="token operator">+=</span> dumpleases.o
+lib-<span class="token variable"><span class="token variable">$(</span>CONFIG_DHCPRELAY<span class="token variable">)</span></span>  <span class="token operator">+=</span> dhcprelay.o common.o socket.o packet.o
+
+lib-<span class="token variable"><span class="token variable">$(</span>CONFIG_FEATURE_UDHCPC_ARPING<span class="token variable">)</span></span> <span class="token operator">+=</span> arpping.o
+lib-<span class="token variable"><span class="token variable">$(</span>CONFIG_FEATURE_UDHCP_RFC3397<span class="token variable">)</span></span> <span class="token operator">+=</span> domain_codec.o<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="3、添加telnetd-端口自定义配置"><a href="#3、添加telnetd-端口自定义配置" class="headerlink" title="3、添加telnetd 端口自定义配置"></a>3、添加telnetd 端口自定义配置</h5><p>打开telnetd相关源文件，再其源文件中添加配置修改代码</p>
+<p>telnetd.c</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">//config:config IS_NOLANCHECK</span>
+<span class="token comment">//config:	bool "Support not check lan"</span>
+<span class="token comment">//config:	default n</span>
+<span class="token comment">//config:	depends on TELNETD</span>
+<span class="token comment">//config:	help</span>
+<span class="token comment">//config:	Support check lan.</span>
+<span class="token comment">//config:</span>
+<span class="token comment">//config:config TELNETD_PORT</span>
+<span class="token comment">//config:	int "Support set telnetd port"</span>
+<span class="token comment">//config:	default 25565</span>
+<span class="token comment">//config:	range 0 65535</span>
+<span class="token comment">//config:	depends on TELNETD</span>
+<span class="token comment">//config:	help</span>
+<span class="token comment">//config:	set telnetd port.</span>
+<span class="token comment">//config:</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img "" class="lazyload placeholder" data-original="/photo/busybox/telnetdConfig.png" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif" alt="telnetdConfig"><br><img "" class="lazyload placeholder" data-original="/photo/busybox/telnetdPort.png" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif" alt="telnetdPort"><br>CONFIG_TELNETD_PORT宏定义在include/autoconf.h头文件中是由make menuconfig生成的头文件<br>添加IS_NOLANCHECK和TELNETD_PORT两个配置。<br>IS_NOLANCHECK的数据类型是bool所以是y和n，TELNETD_PORT数据类型是int所以是数字。<br>default字段配置该选项的默认配置，端口默认配置为50119做了修改和常规的端口不同，range 0 65535语句限制端口设置的范围再0到65535之间。两个配置都有depends on TELNETD，依赖该前置配置，只有TELNETD配置开启后才能生效。源码中把写死的端口修改为CONFIG_TELNETD_PORT。就实现了再menuconfig配置端口。<br>如下图，可以看到配置表中已经多了端口配置选项。<br><img "" class="lazyload placeholder" data-original="/photo/busybox/menuconfig_telnetdPort.png" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif" alt="menuconfig_telnetdPort"></p>
+<h5 id="4、dhcpd添加自定义hostname限制和自定义mac地址限制"><a href="#4、dhcpd添加自定义hostname限制和自定义mac地址限制" class="headerlink" title="4、dhcpd添加自定义hostname限制和自定义mac地址限制"></a>4、dhcpd添加自定义hostname限制和自定义mac地址限制</h5><p>networking/udhcp/Config.src文件中添加相关menuconfig配置选项如下<br>Config.src</p>
+<pre><code class="bash">#
+# For a description of the syntax of this configuration file,
+# see docs/Kconfig-language.txt.
+#
+
+config UDHCPD
+    bool &quot;udhcpd (21 kb)&quot;
+    default y
+    help
+    udhcpd is a DHCP server geared primarily toward embedded systems,
+    while striving to be fully functional and RFC compliant.
+#######################添加开始###############################
+#是否开启honstname设置功能
+config UDHCPD_SET_HOSTNAME
+    bool &quot;udhcpd set hostname restrictions&quot;
+    default n
+    depends on UDHCPD
+    help
+    udhcpd set hostname restrictions.
+#honstname设置选项，数据类型为string，默认为空字符串即不限制
+config UDHCPD_HOSTNAME
+    string &quot;udhcpd set hostname restrictions&quot;
+    default &quot;&quot;
+    depends on UDHCPD_SET_HOSTNAME
+    help
+    A hostname is &quot;A&quot;
+    B hostname is &quot;B&quot;
+#是否开启mac限制功能
+config UDHCPD_SET_HOSTMAC
+    bool &quot;udhcpd set  mac restrictions&quot;
+    default n
+    depends on UDHCPD
+    help
+    udhcpd set  mac restrictions.
+#配置mac限制，再对应mac字段配置mac即可限制该字段。可以实现自定义任意位mac限制
+config UDHCPD_HOSTMAC
+    string &quot;udhcpd set hostmac restrictions&quot;
+    default &quot;51:1B:17:::&quot;
+    depends on UDHCPD_SET_HOSTMAC
+    help
+    Example  Restrict MAC 51:1B:17:::
+    Restrict the first 3 MAC addresses is 0x51 0x1B 0x17,
+    can allocate IP.
+    Example  Restrict MAC ::::2B:
+    Restrict the fifth MAC addresses is 0x2B,can allocate IP.
+################################添加结束#############################
+config FEATURE_UDHCPD_BASE_IP_ON_MAC
+    bool &quot;Select IP address based on client MAC&quot;
+    default n
+    depends on UDHCPD
+    help
+    If selected, udhcpd will base its selection of IP address to offer
+    on the client&#39;s hardware address. Otherwise udhcpd uses the next
+    consecutive free address.
+
+    This reduces the frequency of IP address changes for clients
+    which let their lease expire, and makes consecutive DHCPOFFERS
+    for the same client to (almost always) contain the same
+    IP address.
+
+config FEATURE_UDHCPD_WRITE_LEASES_EARLY
+    bool &quot;Rewrite lease file at every new acknowledge&quot;
+    default y
+    depends on UDHCPD
+    help
+    If selected, udhcpd will write a new file with leases every
+    time a new lease has been accepted, thus eliminating the need
+    to send SIGUSR1 for the initial writing or updating. Any timed
+    rewriting remains undisturbed.
+
+config DHCPD_LEASES_FILE
+    string &quot;Absolute path to lease file&quot;
+    default &quot;/var/lib/misc/udhcpd.leases&quot;
+    depends on UDHCPD
+    help
+    udhcpd stores addresses in a lease file. This is the absolute path
+    of the file. Normally it is safe to leave it untouched.
+
+config DUMPLEASES
+    bool &quot;dumpleases (5.1 kb)&quot;
+    default y
+    help
+    dumpleases displays the leases written out by the udhcpd.
+    Lease times are stored in the file by time remaining in lease, or
+    by the absolute time that it expires in seconds from epoch.
+
+config DHCPRELAY
+    bool &quot;dhcprelay (5.2 kb)&quot;
+    default y
+    help
+    dhcprelay listens for DHCP requests on one or more interfaces
+    and forwards these requests to a different interface or DHCP
+    server.
+
+config UDHCPC
+    bool &quot;udhcpc (24 kb)&quot;
+    default y
+    help
+    udhcpc is a DHCP client geared primarily toward embedded systems,
+    while striving to be fully functional and RFC compliant.
+
+    The udhcp client negotiates a lease with the DHCP server and
+    runs a script when a lease is obtained or lost.
+
+config FEATURE_UDHCPC_ARPING
+    bool &quot;Verify that the offered address is free, using ARP ping&quot;
+    default y
+    depends on UDHCPC
+    help
+    If selected, udhcpc will send ARP probes and make sure
+    the offered address is really not in use by anyone. The client
+    will DHCPDECLINE the offer if the address is in use,
+    and restart the discover process.
+
+config FEATURE_UDHCPC_SANITIZEOPT
+    bool &quot;Do not pass malformed host and domain names&quot;
+    default y
+    depends on UDHCPC
+    help
+    If selected, udhcpc will check some options (such as option 12 -
+    hostname) and if they don&#39;t look like valid hostnames
+    (for example, if they start with dash or contain spaces),
+    they will be replaced with string &quot;bad&quot; when exporting
+    to the environment.
+
+config UDHCPC_DEFAULT_SCRIPT
+    string &quot;Absolute path to config script&quot;
+    default &quot;/usr/share/udhcpc/default.script&quot;
+    depends on UDHCPC || UDHCPC6
+    help
+    This script is called after udhcpc receives an answer. See
+    examples/udhcp for a working example. Normally it is safe
+    to leave this untouched.
+
+# udhcpc6 config is inserted here:
+INSERT
+
+comment &quot;Common options for DHCP applets&quot;
+        depends on UDHCPD || UDHCPC || UDHCPC6 || DHCPRELAY
+
+config FEATURE_UDHCP_PORT
+    bool &quot;Enable &#39;-P port&#39; option for udhcpd and udhcpc&quot;
+    default n
+    depends on UDHCPD || UDHCPC || UDHCPC6
+    help
+    At the cost of ~300 bytes, enables -P port option.
+    This feature is typically not needed.
+
+config UDHCP_DEBUG
+    int &quot;Maximum verbosity level (0..9)&quot;
+    default 2
+    range 0 9
+    depends on UDHCPD || UDHCPC || UDHCPC6 || DHCPRELAY
+    help
+    Verbosity can be increased with multiple -v options.
+    This option controls how high it can be cranked up.
+
+    Bigger values result in bigger code. Levels above 1
+    are very verbose and useful for debugging only.
+
+config UDHCPC_SLACK_FOR_BUGGY_SERVERS
+    int &quot;DHCP options slack buffer size&quot;
+    default 80
+    range 0 924
+    depends on UDHCPD || UDHCPC
+    help
+    Some buggy DHCP servers send DHCP offer packets with option
+    field larger than we expect (which might also be considered a
+    buffer overflow attempt). These packets are normally discarded.
+    If circumstances beyond your control force you to support such
+    servers, this may help. The upper limit (924) makes udhcpc accept
+    even 1500 byte packets (maximum-sized ethernet packets).
+
+    This option does not make udhcp[cd] emit non-standard
+    sized packets.
+
+    Known buggy DHCP servers:
+    3Com OfficeConnect Remote 812 ADSL Router:
+        seems to confuse maximum allowed UDP packet size with
+        maximum size of entire IP packet, and sends packets
+        which are 28 bytes too large.
+    Seednet (ISP) VDSL: sends packets 2 bytes too large.
+
+config FEATURE_UDHCP_RFC3397
+    bool &quot;Support RFC 3397 domain search options&quot;
+    default y
+    depends on UDHCPD || UDHCPC
+    help
+    If selected, both client and server will support passing of domain
+    search lists via option 119, specified in RFC 3397,
+    and SIP servers option 120, specified in RFC 3361.
+
+config FEATURE_UDHCP_8021Q
+    bool &quot;Support 802.1Q VLAN parameters options&quot;
+    default y
+    depends on UDHCPD || UDHCPC
+    help
+    If selected, both client and server will support passing of VLAN
+    ID and priority via options 132 and 133 as per 802.1Q.
+
+<pre class="line-numbers language-none"><code class="language-none">
+下图是udhcpd相关menuconfig添加后的选项，选上udhpcd选项后就会出现udhcpd set hostname restrictions和udhcpd set  mac restrictions选项，将这两个选项选中后即可自定义hostname限制和mac限制。
+![menuconfig_udhcpd](&#x2F;photo&#x2F;busybox&#x2F;menuconfig_udhcpd.png)
+
+udhcpd.c源码有修改的函数如下
+&#96;&#96;&#96;&#96;C
+static NOINLINE void send_offer(struct dhcp_packet *oldpacket,
+		uint32_t static_lease_nip,
+		struct dyn_lease *lease,
+		uint32_t requested_nip,
+		unsigned arpping_ms)
+&#123;
+	struct dhcp_packet packet;
+	uint32_t lease_time_sec;
+
+	init_packet(&amp;packet, oldpacket, DHCPOFFER);
+
+	&#x2F;* If it is a static lease, use its IP *&#x2F;
+	packet.yiaddr &#x3D; static_lease_nip;
+	&#x2F;* Else: *&#x2F;
+	if (!static_lease_nip) &#123;
+		&#x2F;* We have no static lease for client&#39;s chaddr *&#x2F;
+		const char *p_host_name;
+
+		if (lease) &#123;
+			&#x2F;* We have a dynamic lease for client&#39;s chaddr.
+			 * Reuse its IP (even if lease is expired).
+			 * Note that we ignore requested IP in this case.
+			 *&#x2F;
+			packet.yiaddr &#x3D; lease-&gt;lease_nip;
+		&#125;
+		&#x2F;* Or: if client has requested an IP *&#x2F;
+		else if (requested_nip !&#x3D; 0
+		 &#x2F;* and the IP is in the lease range *&#x2F;
+		 &amp;&amp; ntohl(requested_nip) &gt;&#x3D; server_data.start_ip
+		 &amp;&amp; ntohl(requested_nip) &lt;&#x3D; server_data.end_ip
+		 &#x2F;* and *&#x2F;
+		 &amp;&amp; (  !(lease &#x3D; find_lease_by_nip(requested_nip)) &#x2F;* is not already taken *&#x2F;
+		    || is_expired_lease(lease) &#x2F;* or is taken, but expired *&#x2F;
+		    )
+		) &#123;
+			packet.yiaddr &#x3D; requested_nip;
+		&#125;
+		else &#123;
+			&#x2F;* Otherwise, find a free IP *&#x2F;
+			packet.yiaddr &#x3D; find_free_or_expired_nip(oldpacket-&gt;chaddr, arpping_ms);
+		&#125;
+
+		if (!packet.yiaddr) &#123;
+			bb_simple_error_msg(&quot;no free IP addresses. OFFER abandoned&quot;);
+			return;
+		&#125;
+		&#x2F;* Reserve the IP for a short time hoping to get DHCPREQUEST soon *&#x2F;
+		p_host_name &#x3D; (const char*) udhcp_get_option(oldpacket, DHCP_HOST_NAME);
+
+&#x2F;*********hostname限制 *********&#x2F;
+&#x2F;*ENABLE_UDHCPD_SET_HOSTNAME宏定义在include&#x2F;autoconf.h头文件中，
+该头文件是make menuconfig配置选项保存后生成的*&#x2F;
+#if ENABLE_UDHCPD_SET_HOSTNAME 
+		if(p_host_name !&#x3D; NULL &amp;&amp; strstr(p_host_name, CONFIG_UDHCPD_HOSTNAME))
+		&#123;
+			lease &#x3D; add_lease(packet.chaddr, packet.yiaddr,
+					server_data.offer_time,
+					p_host_name,
+					p_host_name ? (unsigned char)p_host_name[OPT_LEN - OPT_DATA] : 0
+			);
+		&#125;
+		else
+		&#123;
+			bb_info_msg(&quot;Not Found --&gt; %s\n&quot;,CONFIG_UDHCPD_HOSTNAME);
+			return;
+		&#125;
+#else
+		lease &#x3D; add_lease(packet.chaddr, packet.yiaddr,
+				server_data.offer_time,
+				p_host_name,
+				p_host_name ? (unsigned char)p_host_name[OPT_LEN - OPT_DATA] : 0
+		);
+#endif
+&#x2F;********* hostname限制 *********&#x2F;
+		if (!lease) &#123;
+			bb_simple_error_msg(&quot;no free IP addresses. OFFER abandoned&quot;);
+			return;
+		&#125;
+	&#125;
+
+	lease_time_sec &#x3D; select_lease_time(oldpacket);
+	udhcp_add_simple_option(&amp;packet, DHCP_LEASE_TIME, htonl(lease_time_sec));
+	add_server_options(&amp;packet);
+
+	&#x2F;* send_packet emits error message itself if it detects failure *&#x2F;
+	send_packet_verbose(&amp;packet, &quot;sending OFFER to %s&quot;);
+&#125;
+
+&#x2F;********* MAC限制 *********&#x2F;
+&#x2F;*这两个函数主要功能是解析配置下来的mac限制
+CONFIG_UDHCPD_HOSTMAC和ENABLE_UDHCPD_SET_HOSTMAC宏定义在include&#x2F;autoconf.h头文件中，
+该头文件make menuconfig配置后生成的头文件
+*&#x2F;
+#if ENABLE_UDHCPD_SET_HOSTMAC
+static int strToChar(char *pStr, int j, unsigned char *pMacCh)
+&#123;
+	int i;
+	if(j &gt; 2) return -1;  &#x2F;&#x2F;mac err
+	for(i &#x3D; j;i &gt; 0;i-- )
+	&#123;
+		if( pStr[i - 1] &gt;&#x3D; &#39;a&#39; &amp;&amp; pStr[i - 1] &lt;&#x3D; &#39;f&#39;)
+		&#123;
+			*pMacCh +&#x3D; (pStr[i - 1] - &#39;a&#39; + 0xa) * (0x1 &lt;&lt; 4*(j-i));
+		&#125;
+		else if( pStr[i - 1] &gt;&#x3D; &#39;A&#39; &amp;&amp; pStr[i - 1] &lt;&#x3D; &#39;F&#39;)
+		&#123;
+			*pMacCh +&#x3D; (pStr[i - 1] - &#39;A&#39; + 0xa) * (0x1 &lt;&lt; 4*(j-i));
+		&#125;
+		else if( pStr[i - 1] &gt;&#x3D; &#39;0&#39; &amp;&amp; pStr[i - 1] &lt;&#x3D; &#39;9&#39;)
+		&#123;
+			*pMacCh +&#x3D; (pStr[i - 1] - &#39;0&#39;) * (0x1 &lt;&lt; 4*(j-i));
+		&#125;
+	&#125;
+	return 0;
+&#125;
+
+static int parseHostMac(unsigned char *pMac, int *pMask)
+&#123;
+	char arrStr[4] &#x3D; &#123;&#125;;
+	char *pPreMac &#x3D; CONFIG_UDHCPD_HOSTMAC;
+	int strLen &#x3D; strlen(CONFIG_UDHCPD_HOSTMAC);
+	char *pTemp;
+	char *pTempMac &#x3D; pPreMac;
+	int i,j;
+	
+	*pMask &#x3D; 0;
+	for(i &#x3D; 0; i &lt; 5; i++)
+	&#123;
+		pTemp &#x3D; strstr(pTempMac, &quot;:&quot;);
+		if(NULL &#x3D;&#x3D; pTemp)
+		&#123;
+			return -1;
+		&#125;
+
+		if(pTemp - pTempMac &gt; 2) return -1;
+
+		j &#x3D; 0;
+		memset(arrStr,0,4);
+		while(pTemp - pTempMac )
+		&#123;
+			arrStr[j] &#x3D; pTempMac[0];
+			pTempMac +&#x3D; 1;
+			j++;
+		&#125;
+
+		pTempMac +&#x3D; 1;
+		if(j)
+		&#123;
+			if(strToChar(arrStr, j, &amp;pMac[i])) return -1;
+			*pMask |&#x3D; 0x1 &lt;&lt; i;
+		&#125;
+		
+
+		if(i &#x3D;&#x3D; 4)
+		&#123;
+			j &#x3D; 0;
+			memset(arrStr,0,4);
+			while(pTempMac - pPreMac &lt; strLen)
+			&#123;
+				arrStr[j] &#x3D; pTempMac[0];
+				pTempMac +&#x3D; 1;
+				j++;
+			&#125;
+			if(j)
+			&#123;
+				if(strToChar(arrStr, j, &amp;pMac[i+1])) return -1;
+				*pMask |&#x3D; 0x1 &lt;&lt; (i + 1);
+			&#125;
+		&#125;
+	&#125;
+
+	return 0;
+&#125;
+#endif
+&#x2F;********* MAC限制*********&#x2F;
+
+int udhcpd_main(int argc UNUSED_PARAM, char **argv)
+&#123;
+	int server_socket &#x3D; -1, retval;
+	uint8_t *state;
+	unsigned timeout_end;
+	unsigned num_ips;
+	unsigned opt;
+	struct option_set *option;
+	char *str_I &#x3D; str_I;
+	const char *str_a &#x3D; &quot;2000&quot;;
+	unsigned arpping_ms;
+	IF_FEATURE_UDHCP_PORT(char *str_P;)
+
+	setup_common_bufsiz();
+
+	IF_FEATURE_UDHCP_PORT(SERVER_PORT &#x3D; 67;)
+	IF_FEATURE_UDHCP_PORT(CLIENT_PORT &#x3D; 68;)
+
+	&#x2F;* Make sure fd 0,1,2 are open *&#x2F;
+	&#x2F;* Setup the signal pipe on fds 3,4 - must be before openlog() *&#x2F;
+	udhcp_sp_setup();
+
+	opt &#x3D; getopt32(argv, &quot;^&quot;
+		&quot;fSI:va:&quot;IF_FEATURE_UDHCP_PORT(&quot;P:&quot;)
+		&quot;\0&quot;
+#if defined CONFIG_UDHCP_DEBUG &amp;&amp; CONFIG_UDHCP_DEBUG &gt;&#x3D; 1
+		&quot;vv&quot;
+#endif
+		, &amp;str_I
+		, &amp;str_a
+		IF_FEATURE_UDHCP_PORT(, &amp;str_P)
+		IF_UDHCP_VERBOSE(, &amp;dhcp_verbose)
+		);
+	if (!(opt &amp; 1)) &#123; &#x2F;* no -f *&#x2F;
+		bb_daemonize_or_rexec(0, argv);
+		logmode &#x3D; LOGMODE_NONE;
+	&#125;
+	&#x2F;* update argv after the possible vfork+exec in daemonize *&#x2F;
+	argv +&#x3D; optind;
+	if (opt &amp; 2) &#123; &#x2F;* -S *&#x2F;
+		openlog(applet_name, LOG_PID, LOG_DAEMON);
+		logmode |&#x3D; LOGMODE_SYSLOG;
+	&#125;
+	if (opt &amp; 4) &#123; &#x2F;* -I *&#x2F;
+		len_and_sockaddr *lsa &#x3D; xhost_and_af2sockaddr(str_I, 0, AF_INET);
+		server_data.server_nip &#x3D; lsa-&gt;u.sin.sin_addr.s_addr;
+		free(lsa);
+	&#125;
+#if ENABLE_FEATURE_UDHCP_PORT
+	if (opt &amp; 32) &#123; &#x2F;* -P *&#x2F;
+		SERVER_PORT &#x3D; xatou16(str_P);
+		CLIENT_PORT &#x3D; SERVER_PORT + 1;
+	&#125;
+#endif
+	arpping_ms &#x3D; xatou(str_a);
+
+	&#x2F;* Would rather not do read_config before daemonization -
+	 * otherwise NOMMU machines will parse config twice *&#x2F;
+	read_config(argv[0] ? argv[0] : DHCPD_CONF_FILE);
+	&#x2F;* prevent poll timeout overflow *&#x2F;
+	if (server_data.auto_time &gt; INT_MAX &#x2F; 1000)
+		server_data.auto_time &#x3D; INT_MAX &#x2F; 1000;
+
+	&#x2F;* Create pidfile *&#x2F;
+	write_pidfile(server_data.pidfile);
+	&#x2F;* if (!..) bb_perror_msg(&quot;can&#39;t create pidfile %s&quot;, pidfile); *&#x2F;
+
+	bb_simple_info_msg(&quot;started, v&quot;BB_VER);
+
+	option &#x3D; udhcp_find_option(server_data.options, DHCP_LEASE_TIME);
+	server_data.max_lease_sec &#x3D; DEFAULT_LEASE_TIME;
+	if (option) &#123;
+		move_from_unaligned32(server_data.max_lease_sec, option-&gt;data + OPT_DATA);
+		server_data.max_lease_sec &#x3D; ntohl(server_data.max_lease_sec);
+	&#125;
+
+	&#x2F;* Sanity check *&#x2F;
+	num_ips &#x3D; server_data.end_ip - server_data.start_ip + 1;
+	if (server_data.max_leases &gt; num_ips) &#123;
+		bb_error_msg(&quot;max_leases&#x3D;%u is too big, setting to %u&quot;,
+			(unsigned)server_data.max_leases, num_ips);
+		server_data.max_leases &#x3D; num_ips;
+	&#125;
+
+	&#x2F;* this sets g_leases *&#x2F;
+	SET_PTR_TO_GLOBALS(xzalloc(server_data.max_leases * sizeof(g_leases[0])));
+
+	read_leases(server_data.lease_file);
+
+	if (udhcp_read_interface(server_data.interface,
+			&amp;server_data.ifindex,
+			(server_data.server_nip &#x3D;&#x3D; 0 ? &amp;server_data.server_nip : NULL),
+			server_data.server_mac)
+	) &#123;
+		retval &#x3D; 1;
+		goto ret;
+	&#125;
+&#x2F;*********  MAC限制 *********&#x2F;
+&#x2F;*解析mac限制
+ENABLE_UDHCPD_SET_HOSTMAC宏定义在include&#x2F;autoconf.h头文件中，
+该头文件make menuconfig配置后生成的头文件
+*&#x2F;
+#if ENABLE_UDHCPD_SET_HOSTMAC
+	int mask &#x3D;0;
+	unsigned char mac[6] &#x3D; &#123;&#125;;
+	int err &#x3D; parseHostMac(mac, &amp;mask);
+	bb_info_msg(&quot;mask_mac %02x %02x %02x %02x %02x %02x  mask &#x3D; %x \n&quot;,mac[0],mac[1],mac[2],mac[3],mac[4],mac[5],mask);
+	if(err) 
+	&#123;
+		bb_info_msg(&quot;SET_HOSTMAC is error!\n&quot;);
+		goto ret;
+	&#125;
+#endif
+&#x2F;********* MAC限制 *********&#x2F;
+ continue_with_autotime:
+	timeout_end &#x3D; monotonic_sec() + server_data.auto_time;
+	while (1) &#123; &#x2F;* loop until universe collapses *&#x2F;
+		struct pollfd pfds[2];
+		struct dhcp_packet packet;
+		int bytes;
+		int tv;
+		uint8_t *server_id_opt;
+		uint8_t *requested_ip_opt;
+		uint32_t requested_nip;
+		uint32_t static_lease_nip;
+		struct dyn_lease *lease, fake_lease;
+
+		if (server_socket &lt; 0) &#123;
+			server_socket &#x3D; udhcp_listen_socket(&#x2F;*INADDR_ANY,*&#x2F; SERVER_PORT,
+					server_data.interface);
+		&#125;
+
+		udhcp_sp_fd_set(pfds, server_socket);
+
+ new_tv:
+		tv &#x3D; -1;
+		if (server_data.auto_time) &#123;
+			tv &#x3D; timeout_end - monotonic_sec();
+			if (tv &lt;&#x3D; 0) &#123;
+ write_leases:
+				write_leases();
+				goto continue_with_autotime;
+			&#125;
+			tv *&#x3D; 1000;
+		&#125;
+
+		&#x2F;* Block here waiting for either signal or packet *&#x2F;
+		retval &#x3D; poll(pfds, 2, tv);
+		if (retval &lt;&#x3D; 0) &#123;
+			if (retval &#x3D;&#x3D; 0)
+				goto write_leases;
+			if (errno &#x3D;&#x3D; EINTR)
+				goto new_tv;
+			&#x2F;* &lt; 0 and not EINTR: should not happen *&#x2F;
+			bb_simple_perror_msg_and_die(&quot;poll&quot;);
+		&#125;
+
+		if (pfds[0].revents) switch (udhcp_sp_read()) &#123;
+		case SIGUSR1:
+			bb_info_msg(&quot;received %s&quot;, &quot;SIGUSR1&quot;);
+			write_leases();
+			&#x2F;* why not just reset the timeout, eh *&#x2F;
+			goto continue_with_autotime;
+		case SIGTERM:
+			bb_info_msg(&quot;received %s&quot;, &quot;SIGTERM&quot;);
+			write_leases();
+			goto ret0;
+		&#125;
+
+		&#x2F;* Is it a packet? *&#x2F;
+		if (!pfds[1].revents)
+			continue; &#x2F;* no *&#x2F;
+
+		&#x2F;* Note: we do not block here, we block on poll() instead.
+		 * Blocking here would prevent SIGTERM from working:
+		 * socket read inside this call is restarted on caught signals.
+		 *&#x2F;
+		bytes &#x3D; udhcp_recv_kernel_packet(&amp;packet, server_socket);
+		if (bytes &lt; 0) &#123;
+			&#x2F;* bytes can also be -2 (&quot;bad packet data&quot;) *&#x2F;
+			if (bytes &#x3D;&#x3D; -1 &amp;&amp; errno !&#x3D; EINTR) &#123;
+				log1(&quot;read error: &quot;STRERROR_FMT&quot;, reopening socket&quot; STRERROR_ERRNO);
+				close(server_socket);
+				server_socket &#x3D; -1;
+			&#125;
+			continue;
+		&#125;
+		if (packet.hlen !&#x3D; 6) &#123;
+			bb_info_msg(&quot;MAC length !&#x3D; 6%s&quot;, &quot;, ignoring packet&quot;);
+			continue;
+		&#125;
+		if (packet.op !&#x3D; BOOTREQUEST) &#123;
+			bb_info_msg(&quot;not a REQUEST%s&quot;, &quot;, ignoring packet&quot;);
+			continue;
+		&#125;
+		state &#x3D; udhcp_get_option(&amp;packet, DHCP_MESSAGE_TYPE);
+		if (state &#x3D;&#x3D; NULL || state[0] &lt; DHCP_MINTYPE || state[0] &gt; DHCP_MAXTYPE) &#123;
+			bb_info_msg(&quot;no or bad message type option%s&quot;, &quot;, ignoring packet&quot;);
+			continue;
+		&#125;
+
+		&#x2F;* Get SERVER_ID if present *&#x2F;
+		server_id_opt &#x3D; udhcp_get_option32(&amp;packet, DHCP_SERVER_ID);
+		if (server_id_opt) &#123;
+			uint32_t server_id_network_order;
+			move_from_unaligned32(server_id_network_order, server_id_opt);
+			if (server_id_network_order !&#x3D; server_data.server_nip) &#123;
+				&#x2F;* client talks to somebody else *&#x2F;
+				log1(&quot;server ID doesn&#39;t match%s&quot;, &quot;, ignoring&quot;);
+				continue;
+			&#125;
+		&#125;
+
+		&#x2F;* Look for a static&#x2F;dynamic lease *&#x2F;
+		static_lease_nip &#x3D; get_static_nip_by_mac(&amp;packet.chaddr);
+		if (static_lease_nip) &#123;
+			bb_info_msg(&quot;found static lease: %x&quot;, static_lease_nip);
+			memcpy(&amp;fake_lease.lease_mac, &amp;packet.chaddr, 6);
+			fake_lease.lease_nip &#x3D; static_lease_nip;
+			fake_lease.expires &#x3D; 0;
+			lease &#x3D; &amp;fake_lease;
+		&#125; else &#123;
+&#x2F;********* MAC限制 *********&#x2F;
+&#x2F;*校验mac限制
+ENABLE_UDHCPD_SET_HOSTMAC宏定义在include&#x2F;autoconf.h头文件中，
+该头文件make menuconfig配置后生成的头文件
+*&#x2F;
+#if ENABLE_UDHCPD_SET_HOSTMAC
+			int i &#x3D; 0;
+			for(i &#x3D; 0; i &lt; 6; i++)
+			&#123;
+				if(mask &amp; (0x1 &lt;&lt; i)) 
+				&#123;
+					if(packet.chaddr[i] !&#x3D; mac[i])
+					&#123;
+						break;
+					&#125;
+				&#125;
+			&#125;
+			
+			if(i !&#x3D; 6)
+			&#123;
+				continue;
+			&#125;
+#endif
+&#x2F;********* MAC限制 *********&#x2F;
+			lease &#x3D; find_lease_by_mac(packet.chaddr);
+			bb_info_msg(&quot;mac:%02x:%02x:%02x:%02x:%02x:%02x \n&quot;, packet.chaddr[0], packet.chaddr[1], packet.chaddr[2], packet.chaddr[3], packet.chaddr[4], packet.chaddr[5]);
+		&#125;
+
+		&#x2F;* Get REQUESTED_IP if present *&#x2F;
+		requested_nip &#x3D; 0;
+		requested_ip_opt &#x3D; udhcp_get_option32(&amp;packet, DHCP_REQUESTED_IP);
+		if (requested_ip_opt) &#123;
+			move_from_unaligned32(requested_nip, requested_ip_opt);
+		&#125;
+
+		switch (state[0]) &#123;
+
+		case DHCPDISCOVER:
+			log1(&quot;received %s&quot;, &quot;DISCOVER&quot;);
+
+			send_offer(&amp;packet, static_lease_nip, lease, requested_nip, arpping_ms);
+			break;
+
+		case DHCPREQUEST:
+			log1(&quot;received %s&quot;, &quot;REQUEST&quot;);
+&#x2F;* RFC 2131:
+
+o DHCPREQUEST generated during SELECTING state:
+
+   Client inserts the address of the selected server in &#39;server
+   identifier&#39;, &#39;ciaddr&#39; MUST be zero, &#39;requested IP address&#39; MUST be
+   filled in with the yiaddr value from the chosen DHCPOFFER.
+
+   Note that the client may choose to collect several DHCPOFFER
+   messages and select the &quot;best&quot; offer.  The client indicates its
+   selection by identifying the offering server in the DHCPREQUEST
+   message.  If the client receives no acceptable offers, the client
+   may choose to try another DHCPDISCOVER message.  Therefore, the
+   servers may not receive a specific DHCPREQUEST from which they can
+   decide whether or not the client has accepted the offer.
+
+o DHCPREQUEST generated during INIT-REBOOT state:
+
+   &#39;server identifier&#39; MUST NOT be filled in, &#39;requested IP address&#39;
+   option MUST be filled in with client&#39;s notion of its previously
+   assigned address. &#39;ciaddr&#39; MUST be zero. The client is seeking to
+   verify a previously allocated, cached configuration. Server SHOULD
+   send a DHCPNAK message to the client if the &#39;requested IP address&#39;
+   is incorrect, or is on the wrong network.
+
+   Determining whether a client in the INIT-REBOOT state is on the
+   correct network is done by examining the contents of &#39;giaddr&#39;, the
+   &#39;requested IP address&#39; option, and a database lookup. If the DHCP
+   server detects that the client is on the wrong net (i.e., the
+   result of applying the local subnet mask or remote subnet mask (if
+   &#39;giaddr&#39; is not zero) to &#39;requested IP address&#39; option value
+   doesn&#39;t match reality), then the server SHOULD send a DHCPNAK
+   message to the client.
+
+   If the network is correct, then the DHCP server should check if
+   the client&#39;s notion of its IP address is correct. If not, then the
+   server SHOULD send a DHCPNAK message to the client. If the DHCP
+   server has no record of this client, then it MUST remain silent,
+   and MAY output a warning to the network administrator. This
+   behavior is necessary for peaceful coexistence of non-
+   communicating DHCP servers on the same wire.
+
+   If &#39;giaddr&#39; is 0x0 in the DHCPREQUEST message, the client is on
+   the same subnet as the server.  The server MUST broadcast the
+   DHCPNAK message to the 0xffffffff broadcast address because the
+   client may not have a correct network address or subnet mask, and
+   the client may not be answering ARP requests.
+
+   If &#39;giaddr&#39; is set in the DHCPREQUEST message, the client is on a
+   different subnet.  The server MUST set the broadcast bit in the
+   DHCPNAK, so that the relay agent will broadcast the DHCPNAK to the
+   client, because the client may not have a correct network address
+   or subnet mask, and the client may not be answering ARP requests.
+
+o DHCPREQUEST generated during RENEWING state:
+
+   &#39;server identifier&#39; MUST NOT be filled in, &#39;requested IP address&#39;
+   option MUST NOT be filled in, &#39;ciaddr&#39; MUST be filled in with
+   client&#39;s IP address. In this situation, the client is completely
+   configured, and is trying to extend its lease. This message will
+   be unicast, so no relay agents will be involved in its
+   transmission.  Because &#39;giaddr&#39; is therefore not filled in, the
+   DHCP server will trust the value in &#39;ciaddr&#39;, and use it when
+   replying to the client.
+
+   A client MAY choose to renew or extend its lease prior to T1.  The
+   server may choose not to extend the lease (as a policy decision by
+   the network administrator), but should return a DHCPACK message
+   regardless.
+
+o DHCPREQUEST generated during REBINDING state:
+
+   &#39;server identifier&#39; MUST NOT be filled in, &#39;requested IP address&#39;
+   option MUST NOT be filled in, &#39;ciaddr&#39; MUST be filled in with
+   client&#39;s IP address. In this situation, the client is completely
+   configured, and is trying to extend its lease. This message MUST
+   be broadcast to the 0xffffffff IP broadcast address.  The DHCP
+   server SHOULD check &#39;ciaddr&#39; for correctness before replying to
+   the DHCPREQUEST.
+
+   The DHCPREQUEST from a REBINDING client is intended to accommodate
+   sites that have multiple DHCP servers and a mechanism for
+   maintaining consistency among leases managed by multiple servers.
+   A DHCP server MAY extend a client&#39;s lease only if it has local
+   administrative authority to do so.
+*&#x2F;
+			if (!requested_ip_opt) &#123;
+				requested_nip &#x3D; packet.ciaddr;
+				if (requested_nip &#x3D;&#x3D; 0) &#123;
+					log1(&quot;no requested IP and no ciaddr%s&quot;, &quot;, ignoring&quot;);
+					break;
+				&#125;
+			&#125;
+			if (lease &amp;&amp; requested_nip &#x3D;&#x3D; lease-&gt;lease_nip) &#123;
+				&#x2F;* client requested or configured IP matches the lease.
+				 * ACK it, and bump lease expiration time. *&#x2F;
+				send_ACK(&amp;packet, lease-&gt;lease_nip);
+				break;
+			&#125;
+			&#x2F;* No lease for this MAC, or lease IP !&#x3D; requested IP *&#x2F;
+
+			if (server_id_opt    &#x2F;* client is in SELECTING state *&#x2F;
+			 || requested_ip_opt &#x2F;* client is in INIT-REBOOT state *&#x2F;
+			) &#123;
+				&#x2F;* &quot;No, we don&#39;t have this IP for you&quot; *&#x2F;
+				send_NAK(&amp;packet);
+			&#125; &#x2F;* else: client is in RENEWING or REBINDING, do not answer *&#x2F;
+
+			break;
+
+		case DHCPDECLINE:
+			&#x2F;* RFC 2131:
+			 * &quot;If the server receives a DHCPDECLINE message,
+			 * the client has discovered through some other means
+			 * that the suggested network address is already
+			 * in use. The server MUST mark the network address
+			 * as not available and SHOULD notify the local
+			 * sysadmin of a possible configuration problem.&quot;
+			 *
+			 * SERVER_ID must be present,
+			 * REQUESTED_IP must be present,
+			 * chaddr must be filled in,
+			 * ciaddr must be 0 (we do not check this)
+			 *&#x2F;
+			log1(&quot;received %s&quot;, &quot;DECLINE&quot;);
+			if (server_id_opt
+			 &amp;&amp; requested_ip_opt
+			 &amp;&amp; lease  &#x2F;* chaddr matches this lease *&#x2F;
+			 &amp;&amp; requested_nip &#x3D;&#x3D; lease-&gt;lease_nip
+			) &#123;
+				memset(lease-&gt;lease_mac, 0, sizeof(lease-&gt;lease_mac));
+				lease-&gt;expires &#x3D; time(NULL) + server_data.decline_time;
+			&#125;
+			break;
+
+		case DHCPRELEASE:
+			&#x2F;* &quot;Upon receipt of a DHCPRELEASE message, the server
+			 * marks the network address as not allocated.&quot;
+			 *
+			 * SERVER_ID must be present,
+			 * REQUESTED_IP must not be present (we do not check this),
+			 * chaddr must be filled in,
+			 * ciaddr must be filled in
+			 *&#x2F;
+			log1(&quot;received %s&quot;, &quot;RELEASE&quot;);
+			if (server_id_opt
+			 &amp;&amp; lease  &#x2F;* chaddr matches this lease *&#x2F;
+			 &amp;&amp; packet.ciaddr &#x3D;&#x3D; lease-&gt;lease_nip
+			) &#123;
+				lease-&gt;expires &#x3D; time(NULL);
+			&#125;
+			break;
+
+		case DHCPINFORM:
+			log1(&quot;received %s&quot;, &quot;INFORM&quot;);
+			send_inform(&amp;packet);
+			break;
+		&#125;
+	&#125;
+ ret0:
+	retval &#x3D; 0;
+ ret:
+	&#x2F;*if (server_data.pidfile) - server_data.pidfile is never NULL *&#x2F;
+		remove_pidfile(server_data.pidfile);
+	return retval;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</code></pre>
+
+      </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>marysufer</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/2023/09/26/busybox-tian-jia-menuconfig-pei-zhi-xuan-xiang/" target="_blank" title="busybox编译以及添加menuconfig配置选项">https://fighthawklyl.github.io/2023/09/26/busybox-tian-jia-menuconfig-pei-zhi-xuan-xiang/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      许可协议。转载请注明出处!
+    </li>
+  </ul>
+<div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+      <!-- 文章详情页的上一页和下一页 -->
+<div class="post-nav">
+
+
+
+
+
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img lazyload" data-original="/medias/13.jpg" style="background-size: cover; 
+      background-position: center center;">
+    </div>
+    <a href="/2023/08/02/udhcpc6-qian-ru-shi-huo-qu-ipv6/" class="post-nav-link">
+      <div class="title">
+        下一篇: <i class="fa fa-angle-right"></i>
+        <div>udhcpc6嵌入式获取IPV6</div>
+      </div>
+      <!-- <div class="content">
+        获取命令udhcpc6 -b -i -eth0
+# -s 可以指定dhcpc的脚本文件路径
+
+default.scrip
+      </div> -->
+    </a>
+  </div>
+
+</div>
+
+    
+    
+
+    <!-- 打赏 -->
+    
+      <div id="appDonate" class="post-donate">
+  <div id="donate_board" class="donate_bar center" ref="donate">
+    <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏" @click="showDialogDrawer()"></a>
+  </div>
+  <transition name="fade">
+    <div 
+      class="donate-box-mask"
+      v-cloak 
+      v-if="visible"
+      @click="cancelDialogDrawer()"
+    >
+    </div>
+  </transition>
+  <transition name="bounce">
+    <div class="donate-box" v-cloak v-if="visible">
+      <div class="donate-box_close">
+        <i class="fa fa-times" aria-hidden="true" @click="cancelDialogDrawer"></i>
+      </div>
+      <div class="donate-box_title">
+        <h4>
+          你的赏识是我前进的动力
+        </h4>
+      </div>
+      <div class="donate-box_tab">
+        <div class="Alipay" :class="{'active': tabActive === 'Alipay'}" @click="changeTabActive('Alipay')">
+          支付宝
+        </div>
+        <div class="WeChatpay" :class="{'active': tabActive === 'WeChatpay'}" @click="changeTabActive('WeChatpay')">
+          微信
+        </div>
+      </div>
+      <div class="donate-box_img">
+        <div class="AlipayImg" v-if="tabActive === 'Alipay'">
+          <img src="/medias/zfb.jpg" alt="支付宝打赏" />
+        </div> 
+        <div class="WeChatpayImg" v-if="tabActive === 'WeChatpay'">
+          <img src="/medias/wx.jpg" alt="微信打赏" />
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDonate',
+    data: {
+      visible: false,
+      tabActive: 'Alipay',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        // function getScroll() {
+        //   return {
+        //     left: window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0,
+        //     top: window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
+        //   };
+        // }
+        this.top = $(document).scrollTop() // or getScroll().top
+        // console.log('aa', $('.main-content'));
+        body.style.cssText = 'overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+      changeTabActive(name) {
+        this.tabActive = name;
+      }
+    },
+    created() {}
+  })
+</script>
+    
+
+    <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+      <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/gitalk/1.7.2/gitalk.css">
+<div id="gitalk-container"></div>
+<script src="https://cdn.bootcdn.net/ajax/libs/gitalk/1.7.2/gitalk.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '0ff20f0fc37200b83d03',
+        clientSecret: 'ef8b2c4bbc3f8232d171e49963abf3b6869d43cb',
+        id: window.location.pathname,
+        repo: 'blog_comments',
+        owner: 'fighthawklyl',
+        admin: ['fighthawklyl']
+    })
+    gitalk.render('gitalk-container')
+</script>
+
+<style>
+    .gt-container .gt-meta {
+        z-index: 2;
+    }
+</style>
+    
+  </div>
+
+
+  </div>
+
+  <!-- 目录 -->
+  <!-- 文章详情页右侧目录 -->
+
+  <div class="toc-aside">
+    <div class="toc-main">
+      <div class="toc-aside-title">
+        <i class="fa fa-list-ul" aria-hidden="true"></i><span>本文目录</span>
+        <div class="toc-open-close">本文目录</div>
+      </div>
+      <div class="toc-content">
+        <link href="/js/tocbot/tocbot.css" rel="stylesheet">
+<script src="/js/tocbot/tocbot.min.js"></script>
+<div class="toc"></div>
+
+<script>
+  if ($('.toc').length > 0) {
+    var headerEl = 'h2, h3, h4',  //headers 
+      content = '.post-detail',//文章容器
+      idArr = {};  //标题数组以确定是否增加索引id
+      //add #id
+
+    $(content).children(headerEl).each(function () {
+      //去除空格以及多余标点
+      var headerId = $(this).text().replace(/[\s|\~|`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\_|\+|\=|\||\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\：|\，|\。]/g, '');
+
+      headerId = headerId.toLowerCase();
+      if (idArr[headerId]) {
+        //id已经存在
+        $(this).attr('id', headerId + '-' + idArr[headerId]);
+        idArr[headerId]++;
+      }
+      else {
+        //id未存在
+        idArr[headerId] = 1;
+        $(this).attr('id', headerId);
+      }
+    });
+
+    tocbot.init({
+      // Where to render the table of contents.
+      tocSelector: '.toc',
+      // Where to grab the headings to build the table of contents.
+      contentSelector: content,
+      // Which headings to grab inside of the contentSelector element.
+      headingSelector: headerEl,
+      scrollSmooth: true,
+      scrollSmoothOffset: -80,
+      headingsOffset: -($(window).height() * 0.4 - 45),
+      positionFixedSelector: '.toc-main',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  }
+
+</script>
+
+<style>
+.is-position-fixed {
+  position:sticky !important;
+  top: 74px;
+}
+.toc-main ul {
+  counter-reset: show-list;
+}
+.toc-main ul li::before {
+  content: counter(item)".";
+  display: block;
+  position: absolute;
+  left: 12px;
+  top:0;
+}
+.toc > .toc-list {
+  padding-left: 35px;
+}
+.toc>.toc-list li {
+  list-style: decimal;
+}
+.toc-list {
+  padding-left: 25px;
+}
+</style>
+      </div>
+    </div>
+  </div>
+
+  
+
+  <script>
+    let openOrCloseBtn = $('.toc-aside .toc-aside-title .toc-open-close');
+    let open = eval('' || 'true');
+    openOrCloseBtn.click(function() {
+      if (open === true) {
+        $(".toc-aside").css({'width': 0, 'padding': 0});
+        $(".toc-content").css({'width': 0});
+        $(".toc-aside-title span, .toc-aside-title i").css({'display': 'none'});
+        $(".main-content").css({'width': '75%', 'margin': '10px auto'});
+        open = false;
+      } else {
+        $(".toc-aside").css({'width': '300px', 'padding': '0 10px'});
+        $(".toc-content").css({'width': '300px'});
+        $(".toc-aside-title span, .toc-aside-title i").css({'display': 'inline-block'});
+        $(".main-content").css({'width': '65%', 'margin-right': '10px', 'margin-left': 'calc(35% - 350px)'});
+        open = true;
+      }
+    });
+  </script>
+
+
+  <!-- 渲染issues标签里的内容 -->
+  <script>
+  function loadIssuesJS() {
+    if ($(".post-detail").find(".issues-api").length == 0) return;
+    document.write('<script type="text/javascript" src="/js/issues/index.js"><\/script>');
+  };
+  loadIssuesJS();
+</script>
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script src="/js/wrapImage.js"></script>
+</div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;" :style="{'background-color': bgColor ? bgColor : 'transparent'}">
+    <transition-group tag="ul" :name="names">
+        <li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+            <img :src="image" class="bg-swiper-img">
+        </li>
+    </transition-group>
+</div>
+<script>
+    var vm = new Vue({
+        el: '#appBgSwiper',
+        data: {
+            names: '' || 'scale' || 'fade', // translate-fade fade
+            mark: 0,
+            img: [],
+            bgColor: '',
+            time: null
+        },
+        methods: {   //添加方法
+            change(i, m) {
+                if (i > m) {
+                    // this.names = 'fade';
+                } else if (i < m) {
+                    // this.names = 'fade';
+                } else {
+                    return;
+                }
+                this.mark = i;
+            },
+            prev() {
+                // this.names = 'fade';
+                this.mark--;
+                if (this.mark === -1) {
+                    this.mark = 3;
+                    return
+                }
+            },
+            next() {
+                // this.names = 'fade';
+                this.mark++;
+                if (this.mark === this.img.length) {
+                    this.mark = 0;
+                    return
+                }
+            },
+            autoPlay() {
+                // this.names = 'fade';
+                this.mark++;
+                if (this.mark === this.img.length) {
+                    this.mark = 0;
+                    return
+                }
+            },
+            play() {
+                let bgImgDelay = '' || '10000'
+                let delay = parseInt(bgImgDelay) || 180000;
+                this.time = setInterval(this.autoPlay, delay);
+            },
+            enter() {
+                clearInterval(this.time);
+            },
+            leave() {
+                this.play();
+            }
+        },
+        created() {
+            this.play()
+        },
+        beforeDestroy() {
+            clearInterval(this.time);
+        },
+        mounted() {
+            let prop = ''|| '/medias/1.jpg,/medias/2.jpg,/medias/3.jpg,/medias/4.jpg,/medias/5.jpg,/medias/6.jpg,/medias/7.jpg,/medias/8.jpg,/medias/9.jpg,/medias/10.jpg,/medias/11.jpg,/medias/12.jpg,/medias/13.jpg,/medias/14.jpg,/medias/15.jpg,/medias/16.jpg';
+            let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://') 
+            if (isImg) {
+                let img = prop.split(',');
+                let configRoot = '/'
+                let arrImg = [];
+                img.forEach(el => {
+                    var Expression=/http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+			        var objExp = new RegExp(Expression);
+
+                    if(objExp.test(el)) {
+                        // http or https
+                        arrImg.push(el);
+                    } else {
+                        // 非http or https开头
+                        // 本地文件
+                        let firstStr = el.charAt(0);
+                        if (firstStr == '/') {
+                            el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+                        }
+                        el = configRoot + el;
+                        arrImg.push(el);
+                    }
+                })
+                this.img = arrImg;
+            } else {
+                this.bgColor = prop;
+            }
+        }
+    })
+</script>
+
+<style>
+    .bg-swiper-box {
+        position: absolute;
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+    .bg-swiper-img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+    </main>
+
+    <!-- 页脚 -->
+    <div class="footer bg-color">
+  <div class="footer-main">
+    <div class="link">
+      
+    </div>
+    <div class="footer-copyright">
+      <p>Copyright © 2019 - 2020 <a target="_blank" rel="noopener" href="https://github.com/fighthawklyl">MarySufer</a> | Powered by <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">Hexo</a> | Theme <a target="_blank" rel="noopener" href="https://github.com/yuang01/theme">Bamboo</a> </p>
+
+    </div>
+    <div class="footer-custom">
+      
+    </div>
+    <!-- 不蒜子统计 -->
+    
+      
+  <!-- 不蒜子统计 -->
+  <span id="busuanzi_container_site_pv">
+        <i class="fa fa-book" aria-hidden="true"></i>本站总阅读量：<span id="busuanzi_value_page_pv"></span> 次
+  </span>
+  <span id="busuanzi_container_site_pv">
+        <i class="fa fa-eye" aria-hidden="true"></i>本站总访问量：<span id="busuanzi_value_site_pv"></span> 次
+  </span>
+  <span class="post-meta-divider">|</span>
+  <span id="busuanzi_container_site_uv" style='display:none'>
+        <i class="fa fa-users" aria-hidden="true"></i>本站访客数：<span id="busuanzi_value_site_uv"></span> 人
+  </span>
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    
+  </div>
+</div>
+
+
+    <!-- 渲染暗黑按钮 -->
+    
+      <div class="dark">
+  <div class="dark-content">
+    <i class="fa fa-moon-o" aria-hidden="true"></i>
+    <!-- <span>关灯</span> -->
+  </div>
+  
+</div>
+
+<script>
+  $(function() {
+    let isDark = JSON.parse(localStorage.getItem('dark'))  || JSON.parse('false');
+    if (isDark) {
+      $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fa fa-lightbulb-o" aria-hidden="true"></i>
+          </div>
+          `
+        );
+    }
+    $('.dark').click(function() {
+      if ($(document.body).is('.darkModel')) {
+        $(document.body).removeClass('darkModel');
+        localStorage.setItem('dark', false);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fa fa-moon-o" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      } else {
+        $(document.body).addClass('darkModel');
+        localStorage.setItem('dark', true);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fa fa-lightbulb-o" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      }
+    })
+  })
+</script>
+    
+    <!-- 渲染回到顶部按钮 -->
+    
+      <div class="goTop top-btn-color border-color">
+  <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</div>
+<script src="/js/goTop.js"></script>
+    
+    <!-- 渲染左下角音乐播放器 -->
+    
+      <link rel="stylesheet" href="/js/aplayer/APlayer@1.10.1.min.css">
+<style>
+.aplayer .aplayer-lrc p {
+  
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px !important;
+}
+
+.aplayer .aplayer-lrc p.aplayer-lrc-current {
+  
+  font-size: 15px;
+  color: #FFB5C5;
+}
+
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+  left: -66px !important;
+}
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+  left: 0px !important;
+}
+
+
+</style>
+<meting-js  
+  class=""
+  server="tencent"
+  type="playlist"
+  id="8067677899"
+  fixed='true'
+  autoplay='true'
+  theme='#FFB5C5'
+  loop='all'
+  order='random'
+  preload='auto'
+  volume='0.7'
+  list-folded='true'
+>
+</meting-js>
+
+<!-- <style>
+  #aplayer {
+    position: fixed;
+    left: 0;
+    bottom: 300px;
+  }
+</style> -->
+<script src="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+    
+
+    <!-- 图片放大 -->
+    
+      <script src="/js/fancybox/jquery.fancybox.min.js"></script>
+    
+    
+    <!-- 鼠标点击特效 -->
+    <!-- 爱心点击 -->
+
+	
+		<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 999; pointer-events: none;" ></canvas>
+		<script src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+		<script src="/js/cursor/explosion.min.js"></script>
+	
+
+
+
+    <!-- 百度解析 -->
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <!-- 背景彩带 -->
+    <script type="text/javascript" size="100" alpha='0.4' zIndex="-1" src="/js/ribbon.min.js"></script>
+    
+    <!-- div滚动到显示区域的动画 -->
+    
+  <script src="/js/aos/aos.js"></script>
+  <script>
+    // https://github.com/michalsnik/aos
+    const themeOffset = parseInt('120') || 120;
+    const themeDelay = parseInt('0') || 0;
+    const themeDuration = parseInt('400') || 400;
+    const themeEasing = 'ease' || 'ease';
+    const themeOnce = eval('true') || false;
+    const themeMirror = eval('false') || false;
+    const themeAnchorPlacement = 'top-bottom' || 'top-bottom';
+    AOS.init({
+      // Global settings:
+      disable: false, // accepts following values: 'phone', 'tablet', 'mobile', boolean, expression or function
+      startEvent: 'DOMContentLoaded', // name of the event dispatched on the document, that AOS should initialize on
+      initClassName: 'aos-init', // class applied after initialization
+      animatedClassName: 'aos-animate', // class applied on animation
+      useClassNames: false, // if true, will add content of `data-aos` as classes on scroll
+      disableMutationObserver: false, // disables automatic mutations' detections (advanced)
+      debounceDelay: 50, // the delay on debounce used while resizing window (advanced)
+      throttleDelay: 99, // the delay on throttle used while scrolling the page (advanced)
+
+      // Settings that can be overridden on per-element basis, by `data-aos-*` attributes:
+      offset: themeOffset, // offset (in px) from the original trigger point
+      delay: themeDelay, // values from 0 to 3000, with step 50ms
+      duration: themeDuration, // values from 0 to 3000, with step 50ms
+      easing: themeEasing, // default easing for AOS animations
+      once: themeOnce, // whether animation should happen only once - while scrolling down
+      mirror: themeMirror, // whether elements should animate out while scrolling past them
+      anchorPlacement: themeAnchorPlacement, // defines which position of the element regarding to window should trigger the animation
+
+    });
+  </script>
+
+    
+    <!-- 复制提示 -->
+    
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/v-plugs-ayu/lib/ayu.css">
+  <script src="https://cdn.jsdelivr.net/npm/v-plugs-ayu/lib/ayu.umd.min.js"></script>
+  <div id="appCopy">
+  </div>
+  <script>
+    var vm = new Vue({
+      el: '#appCopy',
+      data: {
+      },
+      computed: {
+      },
+      mounted() {
+        const that = this;
+        //  监听 ctrl + c事件  
+        $(document).unbind('keypress').bind('keypress', function (e) {
+          if (e.ctrlKey && e.keyCode == 67) {
+            doSomething();
+            // 返回false, 防止重复触发copy事件  
+            return false;
+          }
+        })
+
+        // 鼠标右键的复制事件  
+        $(document).unbind('copy').bind('copy', function (e) {
+          doSomething();
+          // console.log('右键复制 监听成功');
+        });
+
+        function doSomething() {
+          that.$notify({
+            title: "哇哦!",
+            content: "你悄悄的挖走了一些奇怪的东西！",
+            type: 'success'
+          })
+          // console.log('ctrl + c 监听成功');  
+        }
+      },
+      methods: {
+      },
+      created() { }
+    })
+  </script>
+
+
+    <!-- 输入框打字特效 -->
+    <!-- 输入框打字特效 -->
+
+  <script src="/js/activate-power-mode.js"></script>
+  <script>
+    POWERMODE.colorful = true;  // 打开随机颜色特效
+    POWERMODE.shake = false;    // 关闭输入框抖动
+    document.body.addEventListener('input', POWERMODE);//监听打字事件
+  </script>
+
+
+    <!-- markdown代码一键复制功能 -->
+    <!-- markdown代码一键复制功能 -->
+<script src="/js/clipboard/clipboard.min.js"></script>
+<script>
+  !function (e, t, a) {
+    var copy = '复制';
+    /* code */
+    var initCopyCode = function () {
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="" style="position:absolute;top:0;right:0;z-index:1;">';
+      copyHtml += '<i class="fa fa-copy"></i><span>' + copy + '</span>';
+      copyHtml += '</button>';
+      $(".post-detail pre").not('.gutter pre').wrap("<div class='codeBox' style='position:relative;width:100%;'></div>")
+      $(".post-detail pre").not('.gutter pre').before(copyHtml);
+      new ClipboardJS('.btn-copy', {
+        target: function (trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+    
+    <!-- 图片懒加载 -->
+    <script src="/js/lazyload/lazyload@1.9.1.js"></script>
+<script>
+  $(function () {
+    $("div.lazyload, img.lazyload, a.lazyload").lazyload(
+      {
+        effect: "fadeIn",
+        placeholder: "https://img10.360buyimg.com/ddimg/jfs/t1/159345/8/2271/222193/5ff7b36fEe49f5663/a95287c20385127f.gif"    //图片未加载出来时显示的占位图
+      }
+    );
+  });
+</script>
+    
+    <script src="/js/app.js"></script>
+
+  </body>
+</html>
