@@ -1033,7 +1033,7 @@ lib-<span class="token variable"><span class="token variable">$(</span>CONFIG_FE
 <span class="token comment">//config:</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><img "" class="lazyload placeholder" data-original="/photo/busybox/telnetdConfig.png" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif" alt="telnetdConfig"><br><img "" class="lazyload placeholder" data-original="/photo/busybox/telnetdPort.png" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif" alt="telnetdPort"><br>CONFIG_TELNETD_PORT宏定义在include/autoconf.h头文件中是由make menuconfig生成的头文件<br>添加IS_NOLANCHECK和TELNETD_PORT两个配置。<br>IS_NOLANCHECK的数据类型是bool所以是y和n，TELNETD_PORT数据类型是int所以是数字。<br>default字段配置该选项的默认配置，端口默认配置为50119做了修改和常规的端口不同，range 0 65535语句限制端口设置的范围再0到65535之间。两个配置都有depends on TELNETD，依赖该前置配置，只有TELNETD配置开启后才能生效。源码中把写死的端口修改为CONFIG_TELNETD_PORT。就实现了再menuconfig配置端口。<br>如下图，可以看到配置表中已经多了端口配置选项。<br><img "" class="lazyload placeholder" data-original="/photo/busybox/menuconfig_telnetdPort.png" src="https://img10.360buyimg.com/ddimg/jfs/t1/157667/29/9156/134350/603c6445Ebbc9cabe/41219c5d36d45072.gif" alt="menuconfig_telnetdPort"></p>
 <h5 id="4、dhcpd添加自定义hostname限制和自定义mac地址限制"><a href="#4、dhcpd添加自定义hostname限制和自定义mac地址限制" class="headerlink" title="4、dhcpd添加自定义hostname限制和自定义mac地址限制"></a>4、dhcpd添加自定义hostname限制和自定义mac地址限制</h5><p>networking/udhcp/Config.src文件中添加相关menuconfig配置选项如下<br>Config.src</p>
-<pre><code class="bash">#
+<pre><code class="c">#
 # For a description of the syntax of this configuration file,
 # see docs/Kconfig-language.txt.
 #
@@ -1232,7 +1232,6 @@ config FEATURE_UDHCP_8021Q
     help
     If selected, both client and server will support passing of VLAN
     ID and priority via options 132 and 133 as per 802.1Q.
-
 <pre class="line-numbers language-none"><code class="language-none">
 下图是udhcpd相关menuconfig添加后的选项，选上udhpcd选项后就会出现udhcpd set hostname restrictions和udhcpd set  mac restrictions选项，将这两个选项选中后即可自定义hostname限制和mac限制。
 ![menuconfig_udhcpd](&#x2F;photo&#x2F;busybox&#x2F;menuconfig_udhcpd.png)
